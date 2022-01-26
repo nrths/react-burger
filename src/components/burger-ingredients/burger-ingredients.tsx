@@ -6,7 +6,8 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { dataPropTypes } from "../../utils/data";
+import BurgerIngredient from '../burger-ingredient/burger-ingredient'
+import dataPropTypes from "../../utils/types";
 
 function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState("bun");
@@ -35,86 +36,26 @@ function BurgerIngredients(props) {
           Начинки
         </Tab>
       </div>
-      <div className={`${styles.ingredients_list} + mt-10`}>
+      <div className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
         <h2 className="text text_type_main-medium">Булки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {buns.map((ingredient) => {
-            return (
-              <li key={ingredient._id} className={`${styles.card}`}>
-                <img
-                  src={ingredient.image}
-                  alt={ingredient.name}
-                  className={`${styles.image} + pl-4 pr-4`}
-                />
-                <div className={`${styles.price} + + pt-1 pb-1`}>
-                  <p className="text text_type_digits-default mr-2">
-                    {ingredient.price}
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <p
-                  className={`${styles.description} + text text_type_main-default mb-6`}
-                >
-                  {ingredient.name}
-                </p>
-                <Counter count={1} size="default" />
-              </li>
-            );
-          })}
+          {buns.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`}>
+            <BurgerIngredient item={ingredient}/>
+          </li>)}
         </ul>
 
         <h2 className="text text_type_main-medium">Соусы</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {sauces.map((ingredient) => {
-            return (
-              <li key={ingredient._id} className={`${styles.card}`}>
-                <img
-                  src={ingredient.image}
-                  alt={ingredient.name}
-                  className={`${styles.image} + pl-4 pr-4`}
-                />
-                <div className={`${styles.price} + + pt-1 pb-1`}>
-                  <p className="text text_type_digits-default mr-2">
-                    {ingredient.price}
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <p
-                  className={`${styles.description} + text text_type_main-default mb-6`}
-                >
-                  {ingredient.name}
-                </p>
-                <Counter count={1} size="default" />
-              </li>
-            );
-          })}
+          {sauces.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`}>
+            <BurgerIngredient item={ingredient}/>
+          </li>)}
         </ul>
 
         <h2 className="text text_type_main-medium">Начинки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {mains.map((ingredient) => {
-            return (
-              <li key={ingredient._id} className={`${styles.card}`}>
-                <img
-                  src={ingredient.image}
-                  alt={ingredient.name}
-                  className={`${styles.image} + pl-4 pr-4`}
-                />
-                <div className={`${styles.price} + + pt-1 pb-1`}>
-                  <p className="text text_type_digits-default mr-2">
-                    {ingredient.price}
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <p
-                  className={`${styles.description} + text text_type_main-default mb-6`}
-                >
-                  {ingredient.name}
-                </p>
-                <Counter count={1} size="default" />
-              </li>
-            );
-          })}
+          {mains.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`}>
+            <BurgerIngredient item={ingredient}/>
+          </li>)}
         </ul>
       </div>
     </section>

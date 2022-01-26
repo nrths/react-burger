@@ -4,17 +4,3 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #131316;
 }
-
-::-webkit-scrollbar {
-  width: 8px; /* width of the entire scrollbar */
-}
-
-::-webkit-scrollbar-track {
-  background: #2f2f37; /* color of the tracking area */
-}
-
-::-webkit-scrollbar-thumb {
-  background: #8585ad; /* color of the scroll thumb */
-  border: 3px solid #8585ad; /* creates padding around scroll thumb */
-  box-sizing: border-box;
-}
