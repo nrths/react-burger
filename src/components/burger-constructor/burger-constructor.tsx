@@ -1,10 +1,9 @@
-import React from "react";
 import PropTypes from "prop-types";
 import dataPropTypes from "../../utils/types";
+import Total from "../cart-total/cart-total";
 import {
   ConstructorElement,
   DragIcon,
-  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
 
@@ -70,7 +69,8 @@ function BurgerConstructor(props) {
           );
         })}
       </div>
-    </section>
+      <Total props={props.data}/>
+    </section>  
   );
 }
 
