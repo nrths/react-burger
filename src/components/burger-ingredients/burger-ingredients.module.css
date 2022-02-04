@@ -1,0 +1,24 @@
+.tabs {
+    display: flex;
+    flex-direction: row;
+}
+
+.ingredients_list {
+    max-height: 696px;
+    overflow-y: scroll;
+}
+
+.products_list {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+    margin: 0;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
