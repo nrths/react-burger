@@ -18,6 +18,10 @@ function Modal(props) {
         }
     }
 
+    const closeModal = () => {
+        props.onClose();
+    }
+
     useEffect(() => {
         window.addEventListener('keydown', closeModalOnEsc);
         return () => {
@@ -33,7 +37,7 @@ function Modal(props) {
                 <h2 className={`${styles.title} + text text_type_main-large pl-10 pr-10 pt-10 pb-3`}>
                     {props.title}
                 </h2>)}
-                <button className={styles.button_close} type='button' title='Close' onClick={() => {props.onClose(false)}}>
+                 <button className={styles.close} onClick={() => {props.onClose(false)}} type="button"> 
                     <CloseIcon type='primary'/>
                 </button>
                 {props.children}

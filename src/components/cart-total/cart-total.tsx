@@ -3,6 +3,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./cart-total.module.css";
 import CustomIcon from "./custom-icon";
 import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 
 const Total = (props) => {
     const selectedIngredients = props.props;
@@ -27,7 +28,7 @@ const Total = (props) => {
         Оформить заказ
       </Button>
       {modalState && <Modal onClose={switchModalState}>
-        {/* orderDetails */}
+        <OrderDetails></OrderDetails>
         </Modal>
       }
     </section> 

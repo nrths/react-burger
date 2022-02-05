@@ -4,6 +4,7 @@
     left: 50%;
 
     width: 720px;
+    height: 718px;
     border-radius: 40px;
     box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
     background-color: #1c1c21;
@@ -16,7 +17,7 @@
     line-height: 40px;
 }
 
-.button_close {
+.close {
     position: absolute;
     top: 60px;
     right: 40px;
@@ -25,8 +26,9 @@
     border: none;
     cursor: pointer;
     transition: opacity .4s linear;
+    z-index: 3;
 }
 
-.button_close:hover {
+.close:hover {
     opacity: .5;
 }
