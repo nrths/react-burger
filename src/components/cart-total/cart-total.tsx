@@ -27,7 +27,7 @@ const Total = (props) => {
       <Button type="primary" size="medium" onClick={switchModalState}>
         Оформить заказ
       </Button>
-      {modalState && <Modal onClose={switchModalState}>
+      {modalState && <Modal onClose={switchModalState} title=''>
         <OrderDetails></OrderDetails>
         </Modal>
       }

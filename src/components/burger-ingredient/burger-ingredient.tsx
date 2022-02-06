@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styles from "./burger-ingredient.module.css";
 import {
   CurrencyIcon,
@@ -23,5 +24,13 @@ const BurgerIngredient = (props) => {
     </a>
   );
 };
+
+BurgerIngredient.propTypes = {
+  item: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+  })
+}
 
 export default BurgerIngredient;
