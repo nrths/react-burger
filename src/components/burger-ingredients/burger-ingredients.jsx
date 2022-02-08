@@ -15,12 +15,8 @@ function BurgerIngredients(props) {
   const sauces = props.data.filter((products) => products.type === "sauce");
   const mains = props.data.filter((products) => products.type === "main");
 
-  const [modalState, setModalState] = useState(false);
-  const switchModalState = (item) => {
-    setModalState(item)
-  };
-
-
+  const [modalState, setModalState] = useState();
+  
   const mainsRef = useRef(null);
   const saucesRef = useRef(null);
   const bunsRef = useRef(null);
@@ -48,27 +44,27 @@ function BurgerIngredients(props) {
       <div className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
         <h2 className="text text_type_main-medium" ref={bunsRef}>Булки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {buns.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {switchModalState(ingredient)}}>
+          {buns.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
             <BurgerIngredient item={ingredient}/>
           </li>)}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={saucesRef}>Соусы</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {sauces.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {switchModalState(ingredient)}}>
+          {sauces.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
             <BurgerIngredient item={ingredient}/>
           </li>)}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={mainsRef}>Начинки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {mains.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {switchModalState(ingredient)}}>
+          {mains.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
             <BurgerIngredient item={ingredient}/>
           </li>)}
         </ul>
       </div>
       {modalState && <>
-        <Modal onClose={switchModalState} title={"Детали ингредиента"}>
+        <Modal onClose={setModalState} title={"Детали ингредиента"}>
           <IngredientDetails ingredient={modalState}/>
         </Modal>
       </>}
@@ -77,7 +73,7 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes)
+  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default BurgerIngredients;

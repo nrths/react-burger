@@ -1,6 +1,6 @@
 import React from 'react';
 
-const baseUrl = 'https://norma.nomoreparties.space/api/ingredients';
+const baseUrl = 'https://norma.nomoreparties.space/api';
 
 const checkResponse = (res) => {
     if (res.ok) {

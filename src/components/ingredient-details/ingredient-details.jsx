@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 import styles from "./ingredient-details.module.css";
 
-function IngredientDetails(props) {
+function IngredientDetails({ ingredient }) {
   return (
     <div className={`${styles.ingredient} pb-15`}>
       <img
-        src={props.ingredient.image_large}
-        alt={props.ingredient.name}
+        src={ingredient.image_large}
+        alt={ingredient.name}
         className={`${styles.nutrient_image} mb-4`}
       />
-      <p className="text text_type_main-medium mb-8">{props.ingredient.name}</p>
+      <p className="text text_type_main-medium mb-8">{ingredient.name}</p>
 
       <ul className={styles.nutrients}>
         <li className={`${styles.nutrient} mr-5`}>
@@ -17,7 +17,7 @@ function IngredientDetails(props) {
             Калории, ккал
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.calories}
+            {ingredient.calories}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -25,7 +25,7 @@ function IngredientDetails(props) {
             Белки, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.proteins}
+            {ingredient.proteins}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -33,7 +33,7 @@ function IngredientDetails(props) {
             Жиры, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.fat}
+            {ingredient.fat}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -41,7 +41,7 @@ function IngredientDetails(props) {
             Углеводы, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.carbohydrates}
+            {ingredient.carbohydrates}
           </p>
         </li>
       </ul>
@@ -50,15 +50,14 @@ function IngredientDetails(props) {
 }
 
 IngredientDetails.propTypes = {
-    data: PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  calories: PropTypes.number.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  image_large: PropTypes.string.isRequired,
-}),
-    ingredient: PropTypes.bool.isRequired,
-}
+  ingredient: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    calories: PropTypes.number.isRequired,
+    proteins: PropTypes.number.isRequired,
+    fat: PropTypes.number.isRequired,
+    carbohydrates: PropTypes.number.isRequired,
+    image_large: PropTypes.string.isRequired,
+  }),
+};
 
 export default IngredientDetails;
