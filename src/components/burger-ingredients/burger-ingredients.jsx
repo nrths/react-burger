@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useRef, useContext } from "react";
 import styles from "./burger-ingredients.module.css";
 import {
   Tab
@@ -7,13 +6,16 @@ import {
 import BurgerIngredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import dataPropTypes from "../../utils/types";
+import { BurgerConstructorContext } from "../../services/burger-constructor-context";
 
-function BurgerIngredients(props) {
-  const [current, setCurrent] = React.useState("bun");
-  const buns = props.data.filter((products) => products.type === "bun");
-  const sauces = props.data.filter((products) => products.type === "sauce");
-  const mains = props.data.filter((products) => products.type === "main");
+function BurgerIngredients() {
+  const { state } = useContext(BurgerConstructorContext);
+  const [current, setCurrent] = useState('bun');
+  const ingredients = state.data;
+
+  const buns = ingredients.filter((products) => products.type === "bun");
+  const sauces = ingredients.filter((products) => products.type === "sauce");
+  const mains = ingredients.filter((products) => products.type === "main");
 
   const [modalState, setModalState] = useState();
   
@@ -26,7 +28,7 @@ function BurgerIngredients(props) {
     ref.current.scrollIntoView({block: 'start', behavior: 'smooth'})
   }
 
-  return (
+  return ingredients.length && (
     <section>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
@@ -71,9 +73,5 @@ function BurgerIngredients(props) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
-};
 
 export default BurgerIngredients;
