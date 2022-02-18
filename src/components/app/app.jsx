@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -6,47 +6,81 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Loader from "../loader/loader";
 import Error from '../error/error';
 import { baseUrl, checkResponse } from "../../utils/data";
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
+
+const initialIngredients = {
+  data: [],
+  total: 0,
+}
+
+const reducer = (state, action) => {
+  let total = 0;
+  const ingredients = state.data;
+
+  if (ingredients.length > 0) {
+    total = (ingredients.filter(ingredient => ingredient.type !== 'bun').reduce((prev, item) => prev + item.price, 0)) + (ingredients.find(ingredient => ingredient.type === 'bun').price * 2);
+  }
+
+  switch (action.type) {
+    case 'data': 
+      return {...state, data: action.payload}
+    case 'total': 
+      return {...state, total: total}
+    default:
+      throw new Error('Something wrong!');
+  }
+}
 
 const App = () => {
 
-  const [state, setState] = useState({
-    data: [],
+  const [state, dispatch] = useReducer(reducer, initialIngredients);
+  const [appInitialState, setAppInitialState] = useState({
     loading: true,
     hasError: false,
   });
+
   
-  const getIngredients = () => {
-    fetch(`${baseUrl}/ingredients`)
-      .then(checkResponse)
-      .then((res) => {
-        setState({ ...state, loading: false, data: res.data });
-        console.log(res)
-      })
-      .catch((error) => {
-        setState({ ...state, loading: false, hasError: true });
-        console.log(error);
-      })
-  }
 
   useEffect(() => {
+
+    const getIngredients = () => {
+      fetch(`${baseUrl}/ingredients`)
+        .then(checkResponse)
+        .then((res) => {
+          // console.log(res)
+          dispatch({type: 'data', payload: res.data})
+          setAppInitialState({ ...appInitialState, loading: false });
+        })
+        .catch((error) => {
+          dispatch({type: 'data', payload: []})
+          setAppInitialState({ ...appInitialState, hasError: true });
+          console.log(error);
+        })
+        .finally(() => {
+          setAppInitialState({ ...appInitialState, loading: false });
+        })
+    }
+
     getIngredients();
   }, []);
 
 
-  if (state.loading === true) {
+  if (appInitialState.loading === true) {
     return (
       <>
         <Loader />
       </>
     )
   } else {
-    if (state.hasError === false) {
+    if (appInitialState.hasError === false) {
       return (
         <>
           <AppHeader />
           <main className={styles.main}>
-            <BurgerIngredients data={state.data} />
-            <BurgerConstructor data={state.data} />
+            <BurgerConstructorContext.Provider value={{ state, dispatch }}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </BurgerConstructorContext.Provider>
           </main>
         </>
       )

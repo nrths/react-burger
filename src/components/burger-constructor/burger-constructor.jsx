@@ -1,82 +1,62 @@
-// import React, { useState} from 'react';
-import PropTypes from "prop-types";
-import dataPropTypes from "../../utils/types";
+import { useContext } from 'react';
 import Total from "../cart-total/cart-total";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
 
-function BurgerConstructor(props) {
-  const defineIngredientType = (type) =>
-    props.data.filter((products) => products.type === type);
+function BurgerConstructor() {
 
-    // temporary for layout step-1: start
-  const defineIngredientName = (ingredientName) =>
-    props.data.filter((products) => products.name === ingredientName);
-    const mains = defineIngredientType('main');
-    const sauces = defineIngredientType('sauce');
-    const stuff = mains.concat(sauces);
-    // temporary for layout step- 1: end
+  const { state } = useContext(BurgerConstructorContext);
+  const ingredients = state.data;
 
-  return (
-    <section className={`${styles.constr} + mt-25`}>
-      <div className={`${styles.position_bun} + pl-8`}>
-        {defineIngredientName("Краторная булка N-200i").map((data) => {
-          return (
-            <div key={data._id}>
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={data.name + " (верх)"}
-                price={data.price}
-                thumbnail={data.image}
-              />
-            </div>
-          );
-        })}
-      </div>
+  const bun = ingredients.find((products) => products.type === 'bun');
+  const mains = ingredients.filter((products) => products.type !== 'bun');
 
-      <div className={`${styles.stuff} + custom-scroll mt-4 mb-4`}>
-        <ul className={`${styles.list}`}>
-          {stuff.map((data) => {
-            return (
-              <li key={data._id} className={`${styles.stuff__item} + pl-2 pr-2`}>
+  if (ingredients.length !== 0) {
+    return (
+      <section className={`${styles.constr} + mt-25`}>
+        <div className={`${styles.position_bun} + pl-8`}>
+          {bun && (<ConstructorElement
+            type="top"
+            isLocked={true}
+            text={bun.name + " (верх)"}
+            price={bun.price}
+            thumbnail={bun.image}
+          />)}
+        </div>
+
+        <div className={`${styles.stuff} + custom-scroll mt-4 mb-4`}>
+          <ul className={`${styles.list}`}>
+            {mains.map((item) => {
+              return (<li key={item._id} className={`${styles.stuff__item} + pl-2 pr-2`}>
                 <DragIcon type="primary" />
                 <ConstructorElement
-                  text={data.name}
-                  price={data.price}
-                  thumbnail={data.image}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
                 />
               </li>
-            );
-          })}
-        </ul>
-      </div>
+            )}
+            )}
+          </ul>
+        </div>
 
-      <div className={`${styles.position_bun} + pl-8`}>
-        {defineIngredientName("Краторная булка N-200i").map((data) => {
-          return (
-            <div key={data._id}>
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={data.name + " (низ)"}
-                price={data.price}
-                thumbnail={data.image}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <Total props={props.data}/>
-    </section>  
-  );
+        <div className={`${styles.position_bun} + pl-8`}>
+          {bun && (<ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={bun.name + " (низ)"}
+            price={bun.price}
+            thumbnail={bun.image}
+          />)}
+        </div>
+        <Total />
+      </section>
+    )
+  };
 }
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
-};
 
 export default BurgerConstructor;
