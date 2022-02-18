@@ -33,7 +33,7 @@ const reducer = (state, action) => {
 
 const App = () => {
 
-  const [state, dispatch] = useReducer(reducer, initialIngredients, undefined);
+  const [state, dispatch] = useReducer(reducer, initialIngredients);
   const [appInitialState, setAppInitialState] = useState({
     loading: true,
     hasError: false,
@@ -47,9 +47,9 @@ const App = () => {
       fetch(`${baseUrl}/ingredients`)
         .then(checkResponse)
         .then((res) => {
+          // console.log(res)
           dispatch({type: 'data', payload: res.data})
           setAppInitialState({ ...appInitialState, loading: false });
-          console.log(res)
         })
         .catch((error) => {
           dispatch({type: 'data', payload: []})

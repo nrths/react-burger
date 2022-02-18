@@ -10,7 +10,7 @@ import { baseUrl, checkResponse } from '../../utils/data';
 const Total = () => {
   
   const { state, dispatch } = useContext(BurgerConstructorContext);
-  const [modalState, setModalState] = useState(false);
+  const [isModalShown, setModalShown] = useState(false);
   const [orderState, setOrderState] = useState({
     number: 0,
     name: '',
@@ -18,7 +18,7 @@ const Total = () => {
   const ingredients = state.data;
 
   const switchModalState = () => {
-    setModalState(!modalState);
+    setModalShown(!isModalShown);
   }
 
   useEffect(() => {
@@ -36,7 +36,6 @@ const Total = () => {
     })
     .then(checkResponse)
     .then(res => {
-      console.log(res);
       setOrderState({ number: res.order.number, name: res.name })
       switchModalState();
     })
@@ -58,7 +57,7 @@ const Total = () => {
       <Button type="primary" size="medium" onClick={getOrderDetails}>
         Оформить заказ
       </Button>
-      {modalState && <Modal onClose={switchModalState} title=''>
+      {isModalShown && <Modal onClose={switchModalState} title=''>
         <OrderDetails number={orderState.number} name={orderState.name} />
       </Modal>
       }

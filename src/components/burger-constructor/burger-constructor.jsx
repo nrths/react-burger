@@ -13,6 +13,7 @@ function BurgerConstructor() {
   const ingredients = state.data;
 
   const bun = ingredients.find((products) => products.type === 'bun');
+  const mains = ingredients.filter((products) => products.type !== 'bun');
 
   if (ingredients.length !== 0) {
     return (
@@ -29,8 +30,8 @@ function BurgerConstructor() {
 
         <div className={`${styles.stuff} + custom-scroll mt-4 mb-4`}>
           <ul className={`${styles.list}`}>
-            {ingredients.map((item, j) => item.type !== 'bun' && (
-              <li key={item._id + j} className={`${styles.stuff__item} + pl-2 pr-2`}>
+            {mains.map((item) => {
+              return (<li key={item._id} className={`${styles.stuff__item} + pl-2 pr-2`}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   text={item.name}
@@ -38,7 +39,7 @@ function BurgerConstructor() {
                   thumbnail={item.image}
                 />
               </li>
-            )
+            )}
             )}
           </ul>
         </div>
