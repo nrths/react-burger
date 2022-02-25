@@ -15,7 +15,7 @@ In the project directory, you can run:
 * Установлена [библиотека UI-компонентов](https://yandex-praktikum.github.io/react-developer-burger-ui-components/) - ✔
 * Настроен GIT - ✔
 * Организована файловая структура - ✔
-* Верстка первого экрана  `HTML5, CSS, ECMA6`
+* Верстка первого экрана  `HTML5, CSS, ECMA6` - ✔
 *  Созданы `React.Components`: `App` `AppHeader` `BurgerIngredients` `BurgerConstructor` `BurgerIngredient` `Total` - ✔
 
 ### sprint-1/step-2:
