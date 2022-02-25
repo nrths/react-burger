@@ -1,97 +1,45 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ingredientsSelector, fetchIngredients } from '../../slices/ingredients';
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Loader from "../loader/loader";
 import Error from '../error/error';
-import { baseUrl, checkResponse } from "../../utils/data";
-import { BurgerConstructorContext } from '../../services/burger-constructor-context';
-
-const initialIngredients = {
-  data: [],
-  total: 0,
-}
-
-const reducer = (state, action) => {
-  let total = 0;
-  const ingredients = state.data;
-
-  if (ingredients.length > 0) {
-    total = (ingredients.filter(ingredient => ingredient.type !== 'bun').reduce((prev, item) => prev + item.price, 0)) + (ingredients.find(ingredient => ingredient.type === 'bun').price * 2);
-  }
-
-  switch (action.type) {
-    case 'data': 
-      return {...state, data: action.payload}
-    case 'total': 
-      return {...state, total: total}
-    default:
-      throw new Error('Something wrong!');
-  }
-}
 
 const App = () => {
 
-  const [state, dispatch] = useReducer(reducer, initialIngredients);
-  const [appInitialState, setAppInitialState] = useState({
-    loading: true,
-    hasError: false,
-  });
-
-  
+  const { ingredients, loading, hasError } = useSelector(ingredientsSelector);
+  const dispatch = useDispatch()
+  console.log('ingr:', ingredients)
 
   useEffect(() => {
+    dispatch(fetchIngredients())
+  }, [dispatch]);
 
-    const getIngredients = () => {
-      fetch(`${baseUrl}/ingredients`)
-        .then(checkResponse)
-        .then((res) => {
-          // console.log(res)
-          dispatch({type: 'data', payload: res.data})
-          setAppInitialState({ ...appInitialState, loading: false });
-        })
-        .catch((error) => {
-          dispatch({type: 'data', payload: []})
-          setAppInitialState({ ...appInitialState, hasError: true });
-          console.log(error);
-        })
-        .finally(() => {
-          setAppInitialState({ ...appInitialState, loading: false });
-        })
-    }
+  const renderIngredients = () => {
+    if (loading) return <Loader />
+    if (hasError) return <Error />
 
-    getIngredients();
-  }, []);
+    return <>
+      <BurgerIngredients />
+      {/* <BurgerConstructor /> */}
+    </>
+  }
 
-
-  if (appInitialState.loading === true) {
-    return (
-      <>
-        <Loader />
-      </>
-    )
-  } else {
-    if (appInitialState.hasError === false) {
       return (
         <>
           <AppHeader />
           <main className={styles.main}>
-            <BurgerConstructorContext.Provider value={{ state, dispatch }}>
+            {renderIngredients()}
+            {/* <BurgerConstructorContext.Provider value={{ state, dispatch }}>
               <BurgerIngredients />
               <BurgerConstructor />
-            </BurgerConstructorContext.Provider>
+            </BurgerConstructorContext.Provider> */}
           </main>
         </>
       )
-    } else {
-      return (
-        <>
-          <Error />
-        </>
-      )
-    }
-  }
 };
 
 export default App;

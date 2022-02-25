@@ -1,16 +1,16 @@
-import { useContext } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
 import Total from "../cart-total/cart-total";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
-import { BurgerConstructorContext } from '../../services/burger-constructor-context';
+//import { BurgerConstructorContext } from '../../services/burger-constructor-context';
 
 function BurgerConstructor() {
 
-  const { state } = useContext(BurgerConstructorContext);
-  const ingredients = state.data;
+  const ingredients = useSelector(store => store.ingredients);
 
   const bun = ingredients.find((products) => products.type === 'bun');
   const mains = ingredients.filter((products) => products.type !== 'bun');
