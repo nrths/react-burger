@@ -1,3 +1,5 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ingredientsSelector, fetchIngredients } from '../../slices/ingredients';
@@ -23,23 +25,21 @@ const App = () => {
     if (hasError) return <Error />
 
     return <>
-      <BurgerIngredients />
-      {/* <BurgerConstructor /> */}
+      <DndProvider backend={HTML5Backend}>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </DndProvider>
     </>
   }
 
-      return (
-        <>
-          <AppHeader />
-          <main className={styles.main}>
-            {renderIngredients()}
-            {/* <BurgerConstructorContext.Provider value={{ state, dispatch }}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </BurgerConstructorContext.Provider> */}
-          </main>
-        </>
-      )
+  return (
+    <>
+      <AppHeader />
+      <main className={styles.main}>
+        {renderIngredients()}
+      </main>
+    </>
+  )
 };
 
 export default App;

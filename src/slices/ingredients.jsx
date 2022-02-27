@@ -8,6 +8,9 @@ export const initialState = {
     //total: 0,
     ingredientDetails: null,
     ingredientDetailsModal: false,
+    
+    bun: {},
+    selectedIngredients: [],
 }
 
 const ingredientsSlice = createSlice({
@@ -33,7 +36,13 @@ const ingredientsSlice = createSlice({
         removeIngredientDetails: state => {
             state.ingredientDetails = null
             state.ingredientDetailsModal = false
-        }
+        },
+        // addIngredientInConstructorItem: (state, { payload }) => {
+        //     state.selectedIngredients = [...payload, payload.find(item => item._id === payload.id)]
+        // },
+        // deleteIngredientInConstructorItem: (state, { payload }) => {
+        //     state.selectedIngredients = [...state.selectedIngredients, state.selectedIngredients.filter(item => item._id === payload.id)]
+        // }
     },
 })
 
@@ -46,6 +55,8 @@ export const {
     removeIngredientDetails } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
+
+
 
 export default ingredientsSlice.reducer
 

@@ -20,6 +20,7 @@ function BurgerIngredients() {
   const sauces = ingredients.filter((products) => products.type === "sauce");
   const mains = ingredients.filter((products) => products.type === "main");
 
+  const containerRef = useRef(null);
   const mainsRef = useRef(null);
   const saucesRef = useRef(null);
   const bunsRef = useRef(null);
@@ -27,6 +28,32 @@ function BurgerIngredients() {
   const onTabClick = (evt, ref) => {
     setCurrent(evt);
     ref.current.scrollIntoView({block: 'start', behavior: 'smooth'})
+  }
+
+  const onScroll = () => {
+    const top = containerRef.current.getBoundingClientRect().y;
+    const bunsDistance = Math.abs(
+      top - bunsRef.current.getBoundingClientRect().y
+    );
+    const saucesDistance = Math.abs(
+      top - saucesRef.current.getBoundingClientRect().y
+    );
+    const mainsDistance = Math.abs(
+      top - mainsRef.current.getBoundingClientRect().y
+    );
+    const minTabDistance = Math.min(
+      bunsDistance,
+      saucesDistance,
+      mainsDistance
+    );
+    
+    const activeTab =
+      minTabDistance === saucesDistance
+        ? 'sauce'
+        : minTabDistance === mainsDistance
+        ? 'main'
+        : 'bun';
+    setCurrent(activeTab);
   }
 
   return ingredients.length && (
@@ -44,26 +71,24 @@ function BurgerIngredients() {
           Начинки
         </Tab>
       </div>
-      <div className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
+      <div ref={containerRef} onScroll={onScroll} className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
         <h2 className="text text_type_main-medium" ref={bunsRef}>Булки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {buns.map(ingredient => <li key={ingredient._id} className={`${styles.card}`} onClick={() => dispatch(showIngredientDetails(ingredient))}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {buns.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={saucesRef}>Соусы</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {sauces.map(ingredient => <li key={ingredient._id} className={`${styles.card}`} onClick={() => dispatch(showIngredientDetails(ingredient))}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {sauces.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />
+          )}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={mainsRef}>Начинки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {mains.map(ingredient => <li key={ingredient._id} className={`${styles.card}`} onClick={() => dispatch(showIngredientDetails(ingredient))}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {mains.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
       </div>
       {ingredientDetailsModal && <>
