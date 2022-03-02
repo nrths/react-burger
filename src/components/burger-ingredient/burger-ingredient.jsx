@@ -11,11 +11,11 @@ import {
 const BurgerIngredient = ({ item }) => {
   const dispatch = useDispatch();
 
-  const id = item._id
+  // const id = item._id
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredient',
-    item: { id },
+    item: item,
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
     })
@@ -25,7 +25,7 @@ const BurgerIngredient = ({ item }) => {
   if (item.type === 'bun') {
     return (!isDrag &&
       <li onClick={() => dispatch(showIngredientDetails(item))} className={`${styles.card}`}>
-        <a href="#" className={`${styles.link}`}>
+        <a ref={dragRef} href="#" className={`${styles.link}`}>
           <img
             src={item.image}
             alt={item.name}

@@ -1,0 +1,17 @@
+.block {
+    display: grid;
+    grid-template-rows: 100px repeat(6, 1fr);
+    gap: 40px;
+    align-items: center;
+    justify-items: center;
+}
+
+.image {
+    object-fit: cover;
+    object-position: center;
+    background-color: transparent;
+}
+
+.span {
+    text-align: center;
+}

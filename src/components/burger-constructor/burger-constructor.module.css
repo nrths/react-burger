@@ -19,8 +19,3 @@
     max-height: 656px;
 }
 
-.stuff__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}

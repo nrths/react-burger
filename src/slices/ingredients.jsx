@@ -5,12 +5,19 @@ export const initialState = {
     loading: false,
     hasError: false,
     ingredients: [],
-    //total: 0,
     ingredientDetails: null,
     ingredientDetailsModal: false,
-    
-    bun: {},
-    selectedIngredients: [],
+
+    constructor: {
+        burger: [],
+        total: 0,
+    }
+    // selectedIngredients: [],
+    // selectedBun: {},
+    // counter: {},
+    // orderNumber: 0,
+    // orderName: '',
+    // orderDetails: false
 }
 
 const ingredientsSlice = createSlice({
@@ -32,27 +39,41 @@ const ingredientsSlice = createSlice({
         showIngredientDetails: (state, { payload }) => {
             state.ingredientDetails = payload
             state.ingredientDetailsModal = true
+            console.log(payload)
         },
         removeIngredientDetails: state => {
             state.ingredientDetails = null
             state.ingredientDetailsModal = false
         },
-        // addIngredientInConstructorItem: (state, { payload }) => {
-        //     state.selectedIngredients = [...payload, payload.find(item => item._id === payload.id)]
-        // },
-        // deleteIngredientInConstructorItem: (state, { payload }) => {
-        //     state.selectedIngredients = [...state.selectedIngredients, state.selectedIngredients.filter(item => item._id === payload.id)]
-        // }
+        addIngredientInConstructorItem: (state, { payload }) => {
+            state.constructor.burger = [...state.constructor.burger, payload]
+            console.log(payload)
+
+        },
+        deleteIngredientFromConstructorItem: (state, { payload }) => {
+            state.constructor.burger = [...state.constructor.burger, state.constructor.burger.filter((item, index) => index !== payload.index)]
+        },
+        changeBunInConstructor: (state, { payload }) => {
+            state.constructor.burger = state.constructor.burger.map(item => item._id !== payload._id ? payload : item)
+        },
+        dragItems: (state, { payload }) => {
+
+        }
     },
 })
 
 
-export const { 
-    getIngredients, 
-    getIngredientsSuccess, 
-    getIngredientsFailed, 
-    showIngredientDetails, 
-    removeIngredientDetails } = ingredientsSlice.actions
+
+
+export const {
+    getIngredients,
+    getIngredientsSuccess,
+    getIngredientsFailed,
+    showIngredientDetails,
+    removeIngredientDetails,
+    addIngredientInConstructorItem,
+    deleteIngredientFromConstructorItem,
+    changeBunInConstructor } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
 
@@ -69,7 +90,7 @@ export function fetchIngredients() {
             const data = await response.json()
 
             dispatch(getIngredientsSuccess(data.data))
-            
+
         } catch (err) {
             dispatch(getIngredientsFailed())
         }
