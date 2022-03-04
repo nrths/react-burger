@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 import { baseUrl } from '../utils/data';
 
 export const initialState = {
@@ -10,14 +10,11 @@ export const initialState = {
 
     constructor: {
         burger: [],
-        total: 0,
-    }
-    // selectedIngredients: [],
-    // selectedBun: {},
-    // counter: {},
-    // orderNumber: 0,
-    // orderName: '',
-    // orderDetails: false
+        // total: 0,
+    },
+    orderNumber: 0,
+    orderName: '',
+    orderDetailsModal: false
 }
 
 const ingredientsSlice = createSlice({
@@ -45,25 +42,47 @@ const ingredientsSlice = createSlice({
             state.ingredientDetails = null
             state.ingredientDetailsModal = false
         },
-        addIngredientInConstructorItem: (state, { payload }) => {
-            state.constructor.burger = [...state.constructor.burger, payload]
-            console.log(payload)
-
+        addIngredientInConstructorItem: {
+            reducer: (state, { payload }) => {
+                state.constructor.burger = [...state.constructor.burger, payload]
+                console.log(payload)
+            },
+            prepare: item => {
+                const uniqueID = nanoid()
+                return { payload: { ...item, uniqueID } }
+            }
         },
         deleteIngredientFromConstructorItem: (state, { payload }) => {
-            state.constructor.burger = [...state.constructor.burger, state.constructor.burger.filter((item, index) => index !== payload.index)]
+            state.constructor.burger = [...state.constructor.burger].filter(item => item.uniqueID !== payload.uniqueID)
         },
         changeBunInConstructor: (state, { payload }) => {
             state.constructor.burger = state.constructor.burger.map(item => item._id !== payload._id ? payload : item)
         },
         dragItems: (state, { payload }) => {
 
+        },
+        getOrder: state => {
+            state.loading = true;
+        },
+        getOrderSuccess: (state, { payload }) => {
+            state.loading = false
+            state.hasError = false
+            state.orderNumber = payload.order.number
+            state.orderName = payload.name
+            state.orderDetailsModal = true
+        },
+        getOrderFailed: state => {
+            state.loading = false
+            state.hasError = true
+            state.orderNumber = 0
+            state.orderName = 'Ой, не начали :('
+            state.orderDetailsModal = true
+        },
+        closeOrderDetailsModal: state => {
+            state.orderDetailsModal = false
         }
     },
 })
-
-
-
 
 export const {
     getIngredients,
@@ -73,11 +92,10 @@ export const {
     removeIngredientDetails,
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
-    changeBunInConstructor } = ingredientsSlice.actions
+    changeBunInConstructor,
+    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
-
-
 
 export default ingredientsSlice.reducer
 
@@ -93,6 +111,25 @@ export function fetchIngredients() {
 
         } catch (err) {
             dispatch(getIngredientsFailed())
+        }
+    }
+}
+
+export function fetchOrderDetails(ingredients) {
+    return async dispatch => {
+        dispatch(getOrder())
+
+        try {
+            const response = await fetch(`${baseUrl}/orders`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
+            })
+            const data = await response.json()
+
+            dispatch(getOrderSuccess(data))
+        } catch (err) {
+            dispatch(getOrderFailed())
         }
     }
 }

@@ -2,18 +2,17 @@ import {
     ConstructorElement,
     DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-// import React, { useRef } from 'react';
 // import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { deleteIngredientFromConstructorItem } from '../../slices/ingredients'; // sort action 
 import styles from './constructor-main-item.module.css';
 
-const ConstructorMainItem = ({ item }) => { // index, id, moveItem
+const ConstructorMainItem = ({ item }) => { // index, id, key?
     const dispatch = useDispatch();
 
     const handleDeleteItem = () => {
         dispatch(deleteIngredientFromConstructorItem(item))
-        // sort dispatch
+        
     }
 
     return (
@@ -23,7 +22,7 @@ const ConstructorMainItem = ({ item }) => { // index, id, moveItem
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
-                handleDeleteItem={handleDeleteItem}
+                handleClose={handleDeleteItem}
             />
         </li>
     )

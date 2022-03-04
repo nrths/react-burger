@@ -20,7 +20,7 @@ function Modal(props) {
         return () => {
             window.removeEventListener('keydown', closeModalOnEsc);
         }
-    }, [props.onClose]);
+    }, [props, props.onClose]);
 
     return createPortal(
         <>

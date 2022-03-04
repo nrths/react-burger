@@ -1,7 +1,7 @@
 // import dataPropTypes from 'data-prop-types';
 import styles from "./burger-ingredient.module.css";
-import { useDispatch } from "react-redux";
-import { showIngredientDetails } from "../../slices/ingredients";
+import { useSelector, useDispatch } from "react-redux";
+import { showIngredientDetails, ingredientsSelector } from "../../slices/ingredients";
 import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,
@@ -9,9 +9,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerIngredient = ({ item }) => {
+  const {constructor} = useSelector(ingredientsSelector)
+  // const count = [...constructor.burger].filter(element => element.id === item.id).length;
   const dispatch = useDispatch();
-
-  // const id = item._id
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredient',
@@ -38,7 +38,7 @@ const BurgerIngredient = ({ item }) => {
           <p className={`${styles.description} + text text_type_main-default mb-6`}>
             {item.name}
           </p>
-          <Counter count={1} size="default" />
+          {/* {count ? <Counter count={count} size="default" /> : null} */}
         </a>
       </li>
     )
@@ -58,7 +58,7 @@ const BurgerIngredient = ({ item }) => {
           <p className={`${styles.description} + text text_type_main-default mb-6`}>
             {item.name}
           </p>
-          <Counter count={1} size="default" />
+          {/* {count ? <Counter count={count} size="default" /> : null} */}
         </a>
       </li>
     )

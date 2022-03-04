@@ -1,53 +1,52 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { baseUrl } from '../utils/data';
+// import { createSlice } from '@reduxjs/toolkit';
+// import { baseUrl } from '../utils/data';
 
-export const initialState = {
-    loading: false,
-    hasError: false,
-    selectedIngredients: [],
-    total: 0
-}
+// const orderInitialState = {
+//     loading: false,
+//     hasError: false,
+//     data: null,
+// }
 
-const orderSlice = createSlice({
-    name: 'selectedIngredients',
-    initialState,
-    reducers: {
-        getSelectedIngredients: state => {
-            state.loading = true;
-        },
-        getSelectedIngredientsSuccess: (state, { payload }) => {
-            state.selectedIngredients = payload
-            state.loading = false
-            state.hasError = false
-        },
-        getSelectedIngredientsFailed: state => {
-            state.loading = false
-            state.hasError = true
-        },
-    },
-})
+// const orderSlice = createSlice({
+//     name: 'order',
+//     orderInitialState,
+//     reducers: {
+//         getOrder: state => {
+//             state.loading = true;
+//         },
+//         getOrderSuccess: (state, { payload }) => {
+//             state.data = payload.data
+//             state.loading = false
+//             state.hasError = false
+//         },
+//         getOrderFailed: state => {
+//             state.loading = false
+//             state.hasError = true
+//         },
+//     },
+// })
 
-export const { getSelectedIngredients, getSelectedIngredientsSuccess, getSelectedIngredientsFailed } = orderSlice.actions
+// export const { getOrder, getOrderSuccess, getOrderFailed } = orderSlice.actions
 
-export const orderSelector = state => state.selectedIngredients
+// export const orderSelector = state => state.ingredients
 
-export default orderSlice.reducer
+// export default orderSlice.reducer
 
 // export function fetchOrderDetails() {
 //     return async dispatch => {
-//         dispatch(getSelectedIngredients())
+//         dispatch(getOrder())
 
 //         try {
 //             const response = await fetch(`${baseUrl}/orders`, {
 //                 method: 'POST',
 //                 headers: {'Content-Type': 'application/json'},
-//                 body: JSON.stringify({ selectedIngredients: selectedIngredients.map(item => item._id) })
+//                 body: JSON.stringify({ ingredients:  })
 //             })
 //             const data = await response.json()
 
-//             dispatch(getSelectedIngredientsSuccess(data))
+//             dispatch(getOrderSuccess(data))
 //         } catch (err) {
-//             dispatch(getSelectedIngredientsFailed())
+//             dispatch(getOrderFailed())
 //         }
 //     }
 // }
