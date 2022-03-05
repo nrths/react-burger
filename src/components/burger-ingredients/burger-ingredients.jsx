@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import styles from "./burger-ingredients.module.css";
 import {
@@ -15,9 +15,9 @@ function BurgerIngredients() {
   const { ingredients, ingredientDetailsModal, ingredientDetails } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
   
-  const buns = ingredients.filter((products) => products.type === "bun");
-  const sauces = ingredients.filter((products) => products.type === "sauce");
-  const mains = ingredients.filter((products) => products.type === "main");
+  const buns = useMemo(() => ingredients.filter((products) => products.type === "bun"), [ingredients])
+  const sauces = useMemo(() => ingredients.filter((products) => products.type === "sauce"), [ingredients])
+  const mains = useMemo(() => ingredients.filter((products) => products.type === "main"), [ingredients])
 
   const containerRef = useRef(null);
   const mainsRef = useRef(null);

@@ -1,5 +1,5 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-import { baseUrl } from '../../utils/data';
+
 
 export const initialState = {
     loading: false,
@@ -54,8 +54,8 @@ const ingredientsSlice = createSlice({
             if (payload.type === 'bun') {
                 state.constructor.burger = state.constructor.burger.filter(item => item.type !== 'bun')
             } else {
-            state.constructor.burger = [...state.constructor.burger].filter(item => item.uniqueID !== payload.uniqueID)
-            } // ? выделить удаление булки отдельно 
+                state.constructor.burger = [...state.constructor.burger].filter(item => item.uniqueID !== payload.uniqueID)
+            }
         },
         dragItems: (state, { payload }) => {
             const draggableIngredients = state.constructor.burger.filter(item => item.type !== 'bun')
@@ -79,7 +79,10 @@ const ingredientsSlice = createSlice({
         },
         closeOrderDetailsModal: state => {
             state.orderDetailsModal = false
-        }
+            state.constructor.burger = []
+            state.orderNumber = 0
+            state.orderName = ''
+        },
     },
 })
 
@@ -91,45 +94,9 @@ export const {
     removeIngredientDetails,
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
+    clearConstructor,
     getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal, dragItems } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
 
 export default ingredientsSlice.reducer
-
-
-// createAsyncThunk?
-export function fetchIngredients() {
-    return async dispatch => {
-        dispatch(getIngredients())
-
-        try {
-            const response = await fetch(`${baseUrl}/ingredients`)
-            const data = await response.json()
-
-            dispatch(getIngredientsSuccess(data.data))
-
-        } catch (err) {
-            dispatch(getIngredientsFailed())
-        }
-    }
-}
-
-export function fetchOrderDetails(ingredients) {
-    return async dispatch => {
-        dispatch(getOrder())
-
-        try {
-            const response = await fetch(`${baseUrl}/orders`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
-            })
-            const data = await response.json()
-
-            dispatch(getOrderSuccess(data))
-        } catch (err) {
-            dispatch(getOrderFailed())
-        }
-    }
-}

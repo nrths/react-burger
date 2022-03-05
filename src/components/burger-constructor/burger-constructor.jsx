@@ -33,7 +33,7 @@ function BurgerConstructor() {
   const mains = constructor.burger.filter(item => item.type !== 'bun');
 
   return (
-    <section ref={dropTarget} className={`${styles.constr} + mt-25`} style={{backgroundColor: isActiveForDnD ? 'rgba(74, 74, 150, .1' : 'transparent'}}>
+    <section ref={dropTarget} className={`${styles.constr} + mt-25 mb-25`} style={{backgroundColor: isActiveForDnD ? 'rgba(74, 74, 150, .1' : 'transparent'}}>
       {constructor.burger.length === 0 && <ConstructorStartBlock />}
       
       {bun && <div className={`${styles.position_bun} + pl-8 mb-4`}>
