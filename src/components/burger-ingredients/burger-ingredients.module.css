@@ -4,7 +4,7 @@
 }
 
 .ingredients_list {
-    max-height: 696px;
+    max-height: 620px;
     overflow-y: scroll;
 }
 
@@ -14,11 +14,4 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 24px;
     margin: 0;
-}
-
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }

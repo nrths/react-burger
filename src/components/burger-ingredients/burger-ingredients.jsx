@@ -1,4 +1,5 @@
-import React, { useState, useRef, useContext } from "react";
+import { useState, useRef, useMemo } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import styles from "./burger-ingredients.module.css";
 import {
   Tab
@@ -6,19 +7,19 @@ import {
 import BurgerIngredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { BurgerConstructorContext } from "../../services/burger-constructor-context";
+import { ingredientsSelector, removeIngredientDetails } from "../../services/slices/ingredients";
 
 function BurgerIngredients() {
-  const { state } = useContext(BurgerConstructorContext);
-  const [current, setCurrent] = useState('bun');
-  const ingredients = state.data;
-
-  const buns = ingredients.filter((products) => products.type === "bun");
-  const sauces = ingredients.filter((products) => products.type === "sauce");
-  const mains = ingredients.filter((products) => products.type === "main");
-
-  const [modalState, setModalState] = useState();
   
+  const [current, setCurrent] = useState('bun');
+  const { ingredients, ingredientDetailsModal, ingredientDetails } = useSelector(ingredientsSelector);
+  const dispatch = useDispatch();
+  
+  const buns = useMemo(() => ingredients.filter((products) => products.type === "bun"), [ingredients])
+  const sauces = useMemo(() => ingredients.filter((products) => products.type === "sauce"), [ingredients])
+  const mains = useMemo(() => ingredients.filter((products) => products.type === "main"), [ingredients])
+
+  const containerRef = useRef(null);
   const mainsRef = useRef(null);
   const saucesRef = useRef(null);
   const bunsRef = useRef(null);
@@ -26,6 +27,32 @@ function BurgerIngredients() {
   const onTabClick = (evt, ref) => {
     setCurrent(evt);
     ref.current.scrollIntoView({block: 'start', behavior: 'smooth'})
+  }
+
+  const onScroll = () => {
+    const top = containerRef.current.getBoundingClientRect().y;
+    const bunsDistance = Math.abs(
+      top - bunsRef.current.getBoundingClientRect().y
+    );
+    const saucesDistance = Math.abs(
+      top - saucesRef.current.getBoundingClientRect().y
+    );
+    const mainsDistance = Math.abs(
+      top - mainsRef.current.getBoundingClientRect().y
+    );
+    const minTabDistance = Math.min(
+      bunsDistance,
+      saucesDistance,
+      mainsDistance
+    );
+    
+    const activeTab =
+      minTabDistance === saucesDistance
+        ? 'sauce'
+        : minTabDistance === mainsDistance
+        ? 'main'
+        : 'bun';
+    setCurrent(activeTab);
   }
 
   return ingredients.length && (
@@ -43,31 +70,29 @@ function BurgerIngredients() {
           Начинки
         </Tab>
       </div>
-      <div className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
+      <div ref={containerRef} onScroll={onScroll} className={`${styles.ingredients_list} + mt-10 custom-scroll`}>
         <h2 className="text text_type_main-medium" ref={bunsRef}>Булки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {buns.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {buns.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={saucesRef}>Соусы</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {sauces.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {sauces.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />
+          )}
         </ul>
 
         <h2 className="text text_type_main-medium" ref={mainsRef}>Начинки</h2>
         <ul className={`${styles.products_list} + pr-4 pl-4 pt-6 pb-10`}>
-          {mains.map((ingredient) => <li key={ingredient._id} className={`${styles.card}`} onClick={() => {setModalState(ingredient)}}>
-            <BurgerIngredient item={ingredient}/>
-          </li>)}
+          {mains.map(ingredient => 
+            <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
       </div>
-      {modalState && <>
-        <Modal onClose={setModalState} title={"Детали ингредиента"}>
-          <IngredientDetails ingredient={modalState}/>
+      {ingredientDetailsModal && <>
+        <Modal onClose={() => dispatch(removeIngredientDetails())} title={"Детали ингредиента"}>
+          <IngredientDetails ingredient={ingredientDetails}/>
         </Modal>
       </>}
     </section>

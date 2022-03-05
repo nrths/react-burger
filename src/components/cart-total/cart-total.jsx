@@ -1,68 +1,49 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./cart-total.module.css";
 import CustomIcon from "./custom-icon";
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { BurgerConstructorContext } from '../../services/burger-constructor-context';
-import { baseUrl, checkResponse } from '../../utils/data';
+import { ingredientsSelector, closeOrderDetailsModal } from '../../services/slices/ingredients';
+import { fetchOrderDetails } from '../../services/thunks/thunk-requests';
 
 const Total = () => {
-  
-  const { state, dispatch } = useContext(BurgerConstructorContext);
-  const [isModalShown, setModalShown] = useState(false);
-  const [orderState, setOrderState] = useState({
-    number: 0,
-    name: '',
-  });
-  const ingredients = state.data;
+    const { constructor, orderDetailsModal } = useSelector(ingredientsSelector)
+    const dispatch = useDispatch()
+    const constructorItems = constructor.burger
+    const bunsPresence = constructorItems.find(item => item.type === 'bun')
 
-  const switchModalState = () => {
-    setModalShown(!isModalShown);
-  }
+    const total = useMemo(() => {
+        let sum
+        if (constructorItems.length > 0) {
+            sum = constructorItems.filter(ingredient => ingredient.type !== 'bun').reduce((prev, ingredient) => prev + ingredient.price, 0) + (constructorItems.some(ingredient => ingredient.type === 'bun') ? (constructorItems.find(ingredient => ingredient.type === 'bun').price * 2) : 0)
+            return sum
+        } else {
+            sum = 0
+            return sum
+        }
+    }, [constructorItems])
 
-  useEffect(() => {
-    dispatch({type:'total'})
-  }, [ingredients])
-
-  const getOrderDetails = () => {
-    fetch(`${baseUrl}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ingredients: ingredients.map(item => item._id),
-      })
-    })
-    .then(checkResponse)
-    .then(res => {
-      setOrderState({ number: res.order.number, name: res.name })
-      switchModalState();
-    })
-    .catch(err => {
-      console.log(err);
-      switchModalState();
-      setOrderState({ number: 0, name: 'Ой, не начали!' })
-    })
-  }
-  
-  return (
-    <section className={`${styles.total__container} + pt-10 pr-4 pl-4`}>
-      <p className={`${styles.total__sum} + text text_type_digits-medium pr-2`}>
-        {state.total}
-      </p>
-      <div className={`${styles.icon} + mr-10`}>
-        <CustomIcon size='36' />
-      </div>
-      <Button type="primary" size="medium" onClick={getOrderDetails}>
-        Оформить заказ
-      </Button>
-      {isModalShown && <Modal onClose={switchModalState} title=''>
-        <OrderDetails number={orderState.number} name={orderState.name} />
-      </Modal>
-      }
-    </section>
-  );
+    return (
+        constructorItems.length > 0 && <section className={`${styles.total__container} + pt-10 pr-4 pl-4 mb-10`}>
+            <p className={`${styles.total__sum} + text text_type_digits-medium pr-2`}>
+                {total}
+            </p>
+            <div className={`${styles.icon} + mr-10`}>
+                <CustomIcon size='36' />
+            </div>
+            {bunsPresence ? (<Button type="primary" size="medium" onClick={() => { dispatch(fetchOrderDetails(constructorItems)) }}>
+                Оформить заказ
+            </Button>) : (<Button type="primary" size="medium" disabled>
+                Оформить заказ
+            </Button>)}
+            {orderDetailsModal && <Modal onClose={() => { dispatch(closeOrderDetailsModal()) }} title=''>
+                <OrderDetails />
+            </Modal>
+            }
+        </section>
+    );
 };
 
 export default Total;
