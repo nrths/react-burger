@@ -5,7 +5,7 @@ import ConstructorStartBlock from "../constructor-start-block/constructor-start-
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorMainItem from "../constructor-main-item/constructor-main-item";
 import styles from "./burger-constructor.module.css";
-import { ingredientsSelector, addIngredientInConstructorItem, changeBunInConstructor } from '../../slices/ingredients';
+import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem } from '../../slices/ingredients';
 
 function BurgerConstructor() {
 
@@ -16,8 +16,8 @@ function BurgerConstructor() {
     accept: 'ingredient',
     drop(item) {
       if (item.type === 'bun') {
-        dispatch(addIngredientInConstructorItem(item))
-        dispatch(changeBunInConstructor(item))
+        dispatch(deleteIngredientFromConstructorItem(item))
+        dispatch(addIngredientInConstructorItem(item))        
       } else {
         dispatch(addIngredientInConstructorItem(item))
       }
@@ -46,7 +46,7 @@ function BurgerConstructor() {
         />
       </div>}
 
-      {mains.length > 0 && <div className={`${styles.stuff} + custom-scroll mt-4 mb-4`}>
+      {mains.length > 0  && <div className={`${styles.stuff} + custom-scroll mt-4 mb-4`}>
         <ul className={`${styles.list}`}>
           {mains.map((item, index) => {
             return (
@@ -54,7 +54,8 @@ function BurgerConstructor() {
                 id={item._id}
                 index={index}
                 item={item}
-                key={item.uniqueID} />
+                key={item.uniqueID}
+              />
             )
           }
           )}

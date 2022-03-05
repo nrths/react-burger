@@ -15,7 +15,6 @@ function BurgerIngredients() {
   const { ingredients, ingredientDetailsModal, ingredientDetails } = useSelector(ingredientsSelector);
   const dispatch = useDispatch();
   
-
   const buns = ingredients.filter((products) => products.type === "bun");
   const sauces = ingredients.filter((products) => products.type === "sauce");
   const mains = ingredients.filter((products) => products.type === "main");

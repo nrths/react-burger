@@ -10,7 +10,6 @@ export const initialState = {
 
     constructor: {
         burger: [],
-        // total: 0,
     },
     orderNumber: 0,
     orderName: '',
@@ -45,7 +44,6 @@ const ingredientsSlice = createSlice({
         addIngredientInConstructorItem: {
             reducer: (state, { payload }) => {
                 state.constructor.burger = [...state.constructor.burger, payload]
-                console.log(payload)
             },
             prepare: item => {
                 const uniqueID = nanoid()
@@ -53,27 +51,28 @@ const ingredientsSlice = createSlice({
             }
         },
         deleteIngredientFromConstructorItem: (state, { payload }) => {
+            if (payload.type === 'bun') {
+                state.constructor.burger = state.constructor.burger.filter(item => item.type !== 'bun')
+            } else {
             state.constructor.burger = [...state.constructor.burger].filter(item => item.uniqueID !== payload.uniqueID)
-        },
-        changeBunInConstructor: (state, { payload }) => {
-            state.constructor.burger = state.constructor.burger.map(item => item._id !== payload._id ? payload : item)
+            } // ? выделить удаление булки отдельно 
         },
         dragItems: (state, { payload }) => {
-
+            const draggableIngredients = state.constructor.burger.filter(item => item.type !== 'bun')
+            const nonDraggableIngredients = state.constructor.burger.filter(item => item.type === 'bun')
+            draggableIngredients[payload.dragIndex] = draggableIngredients.splice(payload.hoverIndex, 1, draggableIngredients[payload.dragIndex])[0]
+            state.constructor.burger = draggableIngredients.concat(nonDraggableIngredients)
         },
         getOrder: state => {
             state.loading = true;
         },
         getOrderSuccess: (state, { payload }) => {
             state.loading = false
-            state.hasError = false
             state.orderNumber = payload.order.number
             state.orderName = payload.name
             state.orderDetailsModal = true
         },
         getOrderFailed: state => {
-            state.loading = false
-            state.hasError = true
             state.orderNumber = 0
             state.orderName = 'Ой, не начали :('
             state.orderDetailsModal = true
@@ -92,13 +91,14 @@ export const {
     removeIngredientDetails,
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
-    changeBunInConstructor,
-    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal } = ingredientsSlice.actions
+    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal, dragItems } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
 
 export default ingredientsSlice.reducer
 
+
+// createAsyncThunk?
 export function fetchIngredients() {
     return async dispatch => {
         dispatch(getIngredients())

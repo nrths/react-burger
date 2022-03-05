@@ -12,9 +12,9 @@ import Error from '../error/error';
 
 const App = () => {
 
-  const { ingredients, loading, hasError } = useSelector(ingredientsSelector);
+  const { loading, hasError } = useSelector(ingredientsSelector);
   const dispatch = useDispatch()
-  console.log('ingr:', ingredients)
+  // console.log('ingr:', ingredients)
 
   useEffect(() => {
     dispatch(fetchIngredients())

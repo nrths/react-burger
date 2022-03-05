@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { ingredientsSelector } from '../../slices/ingredients';
-// import PropTypes from 'prop-types';
 import styles from './order-details.module.css';
 import orderStatusOK from '../../images/order-ok.gif';
 
@@ -18,10 +17,5 @@ function OrderDetails() {
         </div>
     )
 }
-
-// OrderDetails.propTypes = {
-//     number: PropTypes.number.isRequired,
-//     name: PropTypes.string.isRequired,
-// }
 
 export default OrderDetails;

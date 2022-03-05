@@ -1,4 +1,4 @@
-// import dataPropTypes from 'data-prop-types';
+import dataPropTypes from '../../utils/types';
 import styles from "./burger-ingredient.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { showIngredientDetails, ingredientsSelector } from "../../slices/ingredients";
@@ -10,7 +10,10 @@ import {
 
 const BurgerIngredient = ({ item }) => {
   const {constructor} = useSelector(ingredientsSelector)
-  // const count = [...constructor.burger].filter(element => element.id === item.id).length;
+  const constructorItems = constructor.burger
+  const count = constructorItems.filter(element => element._id === item._id).length;
+  const bunCount = 1;
+ 
   const dispatch = useDispatch();
 
   const [{ isDrag }, dragRef] = useDrag({
@@ -21,6 +24,9 @@ const BurgerIngredient = ({ item }) => {
     })
   });
 
+  if (constructorItems.includes(item.type === 'bun')) {
+    return bunCount
+  }
 
   if (item.type === 'bun') {
     return (!isDrag &&
@@ -38,7 +44,7 @@ const BurgerIngredient = ({ item }) => {
           <p className={`${styles.description} + text text_type_main-default mb-6`}>
             {item.name}
           </p>
-          {/* {count ? <Counter count={count} size="default" /> : null} */}
+          {count > 0 && <Counter count={bunCount} size="default" />}
         </a>
       </li>
     )
@@ -58,7 +64,7 @@ const BurgerIngredient = ({ item }) => {
           <p className={`${styles.description} + text text_type_main-default mb-6`}>
             {item.name}
           </p>
-          {/* {count ? <Counter count={count} size="default" /> : null} */}
+          {count > 0 && <Counter count={count} size="default" />}
         </a>
       </li>
     )
@@ -66,8 +72,8 @@ const BurgerIngredient = ({ item }) => {
 
 };
 
-// BurgerIngredient.propTypes = {
-//   item: dataPropTypes.isRequired,
-// }
+BurgerIngredient.propTypes = {
+  item: dataPropTypes.isRequired,
+}
 
 export default BurgerIngredient;
