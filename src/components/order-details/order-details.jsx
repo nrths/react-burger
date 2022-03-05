@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { ingredientsSelector } from '../../slices/ingredients';
+import { ingredientsSelector } from '../../services/slices/ingredients';
 import styles from './order-details.module.css';
 import orderStatusOK from '../../images/order-ok.gif';
 

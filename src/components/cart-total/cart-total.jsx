@@ -5,7 +5,7 @@ import styles from "./cart-total.module.css";
 import CustomIcon from "./custom-icon";
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import {fetchOrderDetails, ingredientsSelector, closeOrderDetailsModal } from '../../slices/ingredients';
+import {fetchOrderDetails, ingredientsSelector, closeOrderDetailsModal } from '../../services/slices/ingredients';
 
 const Total = () => {
     const { constructor, orderDetailsModal } = useSelector(ingredientsSelector)

@@ -5,7 +5,7 @@ import {
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { deleteIngredientFromConstructorItem, dragItems } from '../../slices/ingredients';
+import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slices/ingredients';
 import styles from './constructor-main-item.module.css';
 
 const ConstructorMainItem = ({ item, index }) => {

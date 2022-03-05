@@ -5,7 +5,7 @@ import ConstructorStartBlock from "../constructor-start-block/constructor-start-
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorMainItem from "../constructor-main-item/constructor-main-item";
 import styles from "./burger-constructor.module.css";
-import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem } from '../../slices/ingredients';
+import { ingredientsSelector, addIngredientInConstructorItem, deleteIngredientFromConstructorItem } from '../../services/slices/ingredients';
 
 function BurgerConstructor() {
 

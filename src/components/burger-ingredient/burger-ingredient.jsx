@@ -1,7 +1,7 @@
 import dataPropTypes from '../../utils/types';
 import styles from "./burger-ingredient.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { showIngredientDetails, ingredientsSelector } from "../../slices/ingredients";
+import { showIngredientDetails, ingredientsSelector } from "../../services/slices/ingredients";
 import { useDrag } from 'react-dnd';
 import {
   CurrencyIcon,

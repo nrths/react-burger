@@ -2,7 +2,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ingredientsSelector, fetchIngredients } from '../../slices/ingredients';
+import { ingredientsSelector, fetchIngredients } from '../../services/slices/ingredients';
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";

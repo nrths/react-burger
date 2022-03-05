@@ -7,7 +7,7 @@ import {
 import BurgerIngredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ingredientsSelector, removeIngredientDetails } from "../../slices/ingredients";
+import { ingredientsSelector, removeIngredientDetails } from "../../services/slices/ingredients";
 
 function BurgerIngredients() {
   
