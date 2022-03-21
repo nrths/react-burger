@@ -6,7 +6,7 @@ import CustomIcon from "./custom-icon";
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { ingredientsSelector, closeOrderDetailsModal } from '../../services/slices/ingredients';
-import { fetchOrderDetails } from '../../services/thunks/thunk-requests';
+import { fetchOrderDetails } from '../../services/thunks/ingredients-and-order-thunks';
 
 const Total = () => {
     const { constructor, orderDetailsModal } = useSelector(ingredientsSelector)

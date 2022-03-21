@@ -1,6 +1,6 @@
 import { baseUrl, checkResponse } from '../../utils/data';
-import { getIngredients, getIngredientsSuccess, getIngredientsFailed, clearConstructor,
-         getOrder, getOrderSuccess, getOrderFailed } from '../../services/slices/ingredients';
+import { getIngredients, getIngredientsSuccess, getIngredientsFailed,
+         getOrder, getOrderSuccess, getOrderFailed } from '../slices/ingredients';
 
 export const fetchIngredients = () => {
     return async dispatch => {
