@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registration } from '../../services/thunks/auth-thunks';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import styles from './register.module.css';
 
 const RegistrationPage = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
+    const refreshToken = localStorage.refreshToken;
     const [formValue, setFormValue] = useState({
         email: '',
         password: '', 
@@ -25,6 +27,10 @@ const RegistrationPage = () => {
     }
 
     return (
+        <>
+        {refreshToken ? (
+            <Redirect to={location.state?.from || '/'} />
+        ) : (
         <div className={`${styles.container}`}>
             <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
             <form className={`${styles.form}`} onSubmit={handleSubmit}>
@@ -52,7 +58,8 @@ const RegistrationPage = () => {
             <span className="text text_type_main-default text_color_inactive">Уже зарегистрированы?
                 <Link to={'/login'} className={`${styles.link} ml-2`}>Войти</Link>
             </span>
-        </div>
+        </div>)}
+        </>
     );
 };
 

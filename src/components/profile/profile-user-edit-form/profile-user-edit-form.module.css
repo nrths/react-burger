@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 480px;
+    margin-bottom: 56px;
+}
+
+.form > div {
+    width: 100%;
+}
+
+.form > div > div {
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row-reverse;
+}

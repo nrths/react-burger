@@ -1,9 +1,14 @@
 import styles from './login.module.css';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components"; //ShowIcon, HideIcon
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { loginUser } from '../../services/thunks/auth-thunks';
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const refreshToken = localStorage.refreshToken;
     const [formValue, setFormValue] = useState({
         email: '',
         password: ''
@@ -15,11 +20,15 @@ const LoginPage = () => {
     }
     const handleSubmit = e => {
         e.preventDefault();
-        // dispatch auth?
+        dispatch(loginUser(formValue))
     }
 
     return (
-        <div className={styles.container}>
+        <>
+        {/* {refreshToken ? (
+            <Redirect to={location.state?.from || '/'} />
+        ) : */}
+         (<div className={styles.container}>
             <h1 className="text text_type_main-medium mb-6">Вход</h1>
             <form className={`${styles.form} mb-20`} onSubmit={handleSubmit}>
                 <Input type={'text'}
@@ -41,7 +50,9 @@ const LoginPage = () => {
                     <Link to='/forgot-password' className={`${styles.link} ml-2`}>Восстановить пароль</Link>
                 </span>
             </div>
-        </div>
+        </div>)
+        {/* } */}
+        </>
     );
 };
 
