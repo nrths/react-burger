@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { registration } from '../../services/thunks/auth-thunks';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './register.module.css';
 
 const RegistrationPage = () => {
+    const dispatch = useDispatch();
     const [formValue, setFormValue] = useState({
-        username: '',
         email: '',
-        password: '',
+        password: '', 
+        name: '' 
     })
 
     const onChange = e => {
@@ -18,7 +21,7 @@ const RegistrationPage = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // dispatch registration?
+        dispatch(registration(formValue))
     }
 
     return (
@@ -28,11 +31,12 @@ const RegistrationPage = () => {
                 <Input type={'text'}
                     placeholder={'Имя'}
                     onChange={onChange}
-                    value={formValue.username}
-                    name={'username'}
+                    value={formValue.name}
+                    name={'name'}
                     error={false}
                     errorText={'Ошибка'}
-                    size={'default'} />
+                    size={'default'} 
+                />
                 <Input type={'text'}
                     placeholder={'E-mail'}
                     onChange={onChange}
@@ -40,7 +44,8 @@ const RegistrationPage = () => {
                     name={'email'}
                     error={false}
                     errorText={'Ошибка'}
-                    size={'default'} />
+                    size={'default'} 
+                />
                 <PasswordInput onChange={onChange} value={formValue.password} name={'password'} />
                 <Button type="primary" size='medium'>Зарегистрироваться</Button>
             </form>

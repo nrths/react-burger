@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchIngredients } from '../../services/thunks/ingredients-and-order-thunks';
 
 import AppHeader from "../app-header/app-header";
-import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage } from '../../pages';
+import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, NotFoundPage } from '../../pages';
 
 const App = () => {
 
@@ -30,6 +30,10 @@ const App = () => {
           </Route>
           <Route path="/forgot-password" exact={true}>
             <ForgotPasswordPage />
+          </Route>
+
+          <Route>
+            <NotFoundPage />
           </Route>
         </Switch>
       </Router>

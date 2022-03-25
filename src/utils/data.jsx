@@ -1,3 +1,5 @@
+import { getCookie } from '../utils/cookies';
+
 const baseUrl = 'https://norma.nomoreparties.space/api';
 
 const checkResponse = (res) => {
@@ -6,4 +8,9 @@ const checkResponse = (res) => {
     } return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-export { baseUrl, checkResponse };
+const authHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + getCookie('token')
+}
+
+export { baseUrl, checkResponse, authHeaders };
