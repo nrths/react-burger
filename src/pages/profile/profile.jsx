@@ -2,7 +2,7 @@ import styles from './profile.module.css';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getUserInfo } from '../../services/thunks/auth-thunks';
+import { getUserInfo, updateToken } from '../../services/thunks/auth-thunks';
 import { ProfileNavigation } from '../../components/profile/profile-nav/profile-nav';
 import { ProfileEditForm } from '../../components/profile/profile-user-edit-form/profile-user-edit-form';
 
@@ -13,6 +13,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         dispatch(getUserInfo())
+        dispatch(updateToken())
     }, [dispatch])
     
 

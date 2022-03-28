@@ -25,9 +25,9 @@ const LoginPage = () => {
 
     return (
         <>
-        {/* {refreshToken ? (
+        {refreshToken ? (
             <Redirect to={location.state?.from || '/'} />
-        ) : */}
+        ) :
          (<div className={styles.container}>
             <h1 className="text text_type_main-medium mb-6">Вход</h1>
             <form className={`${styles.form} mb-20`} onSubmit={handleSubmit}>
@@ -51,7 +51,7 @@ const LoginPage = () => {
                 </span>
             </div>
         </div>)
-        {/* } */}
+        }
         </>
     );
 };

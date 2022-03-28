@@ -95,7 +95,8 @@ export const {
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
     clearConstructor,
-    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal, dragItems } = ingredientsSlice.actions
+    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal, dragItems 
+} = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
 
