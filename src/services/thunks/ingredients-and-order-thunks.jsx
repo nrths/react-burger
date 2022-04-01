@@ -1,38 +1,32 @@
 import { baseUrl, checkResponse } from '../../utils/data';
-import { getIngredients, getIngredientsSuccess, getIngredientsFailed,
-         getOrder, getOrderSuccess, getOrderFailed } from '../slices/ingredients';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchIngredients = () => {
-    return async dispatch => {
-        dispatch(getIngredients())
-
+export const fetchIngredients = createAsyncThunk(
+    'ingredients/fetchIngredients',
+    async (ingredients, { rejectWithValue }) => {
         try {
             const response = await fetch(`${baseUrl}/ingredients`)
             const data = await checkResponse(response)
-
-            dispatch(getIngredientsSuccess(data.data))
-
+            return data
         } catch (err) {
-            dispatch(getIngredientsFailed())
+            return rejectWithValue(err.message)
         }
     }
-}
+)
 
-export const fetchOrderDetails = (ingredients) => {
-    return async dispatch => {
-        dispatch(getOrder())
-
+export const fetchOrderDetails = createAsyncThunk(
+    'ingredients/fetchOrderDetails',
+    async (ingredients, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${baseUrl}/orders`, {
+            const response = await fetch(`${baseUrl}/orders`, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
             })
             const data = await checkResponse(response)
-
-            dispatch(getOrderSuccess(data))
+            return data
         } catch (err) {
-            dispatch(getOrderFailed())
+            return rejectWithValue(err.message)
         }
     }
-}
+)

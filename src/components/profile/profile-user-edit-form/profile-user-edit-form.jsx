@@ -1,6 +1,6 @@
 import styles from './profile-user-edit-form.module.css';
-import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'; // EditIcon, CloseIcon
-import { useState, useEffect, useRef, forwardRef } from 'react';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../../services/slices/authorization';
 import { getUserInfo, updateUserInfo } from '../../../services/thunks/auth-thunks';
@@ -12,26 +12,29 @@ export const ProfileEditForm = () => {
     const dispatch = useDispatch();
     const { user } = useSelector(userSelector);
 
-    // const [formNameValue, setFormNameValue] = useState(user.name)
-    // const [formEmailValue, setFormEmailValue] = useState(user.email)
-    // const [formPasswordValue, setFormPasswordValue] = useState('')
-
     const [formValue, setFormValue] = useState({
         email: user.email,
         password: '',
         name: user.name,
     })
-
+    const [showButton, setShowButton] = useState(false)
+    
     useEffect(() => {
         dispatch(getUserInfo())
-    }, [dispatch])
+        setFormValue({
+            email: user.email,
+            password: '',
+            name: user.name,
+        })
+        
+    }, [dispatch, user])
 
     const onReset = (e) => {
         e.preventDefault()
         setFormValue({
-            name: user.name,
             email: user.email,
             password: '',
+            name: user.name,
         })
     }
 
@@ -39,22 +42,29 @@ export const ProfileEditForm = () => {
         setFormValue({
             ...formValue, [e.target.name]: e.target.value
         })
-        console.log([e.target.name])
+        setShowButton(true)
     }
 
-    const onIconClick = () => {
+    const onIconClickName = () => {
         setTimeout(() => nameInputRef.current.focus(), 0);
+    }
+    const onIconClickEmail = () => {
+        setTimeout(() => emailInputRef.current.focus(), 0);
+    }
+    const onIconClickPassword = () => {
+        setTimeout(() => passwordInputRef.current.focus(), 0);
     }
 
     const onSubmit = e => {
         e.preventDefault()
         dispatch(updateUserInfo(formValue))
+        setShowButton(false)
     }
 
     return (
         <>
             <div className={styles.container}>
-                <form className={styles.form} > 
+                <form className={styles.form} >
                     {<Input
                         type={'text'}
                         placeholder={'Имя'}
@@ -64,7 +74,7 @@ export const ProfileEditForm = () => {
                         name={'name'}
                         error={false}
                         ref={nameInputRef}
-                        // onIconClick={onIconClick()}
+                        onIconClick={onIconClickName}
                         errorText={'Ошибка'}
                         size={'default'}
                     />}
@@ -78,25 +88,25 @@ export const ProfileEditForm = () => {
                         ref={emailInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
-                    // onIconClick={onIconClick(emailInputRef)}
+                        onIconClick={onIconClickEmail}
                     />}
                     {<Input type={'password'}
                         placeholder={'Пароль'}
                         onChange={onChange}
-                        icon={(formValue.password === user.password) ? 'EditIcon' : 'CloseIcon'}
+                        icon={(formValue.password === '') ? 'EditIcon' : 'CloseIcon'}
                         value={formValue.password}
                         name={'password'}
                         error={false}
                         ref={passwordInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
-                    // onIconClick={onIconClick(emailInputRef)}
+                        onIconClick={onIconClickPassword}
                     />}
 
-                    <div className={styles.buttons}>
+                    {showButton && <div className={styles.buttons}>
                         <Button type="primary" size='medium' onClick={onSubmit} className={`${styles.button}`}>Сохранить</Button>
                         <Button type="secondary" size='medium' onClick={onReset} className={`${styles.button}`}>Отмена</Button>
-                    </div>
+                    </div>}
                 </form>
             </div>
         </>

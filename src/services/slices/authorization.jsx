@@ -1,4 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getTokens } from '../../utils/tokens';
+import { deleteCookie } from '../../utils/cookies';
+import {
+    registration, forgotPassword, resetPassword,
+    login, updateToken, getUserInfo, updateUserInfo,
+    logout
+} from '../thunks/auth-thunks';
 
 export const initialState = {
     user: {
@@ -7,106 +14,115 @@ export const initialState = {
         name: '',
     },
 
-    token: {
-        get: false,
-        success: false,
-        failed: false,
-    },
+    // tokens: {
+    //     accessToken: '',
+    //     refreshToken: '',
+    // },
 
-    logoutRequest: false,
-    logoutFailed: false,
+    forgotPass: false,
+    resetPass: false,
+    isLoggedIn: false,
 
     loading: false,
     hasError: false,
 }
 
 const userRightsSlice = createSlice({
-    name: 'rights',
+    name: 'auth',
     initialState,
     reducers: {
-        createUser: state => {
-            state.loading = true;
-        },
-        createUserSuccess: (state, { payload }) => {
-            console.log(payload);
-            state.loading = false;
-            state.user = payload;
-        },
-        createUserFailed: state => {
-            state.hasError = true;
-            state.loading = false;
-        },
-        login: state => {
-            state.loading = true;
-        },
-        loginSuccess: (state, { payload }) => {
-            state.loading = false;
-            state.user.email = payload.user.email;
-            state.user.password = payload.user.password;
-        },
-        loginFailed: state => {
-            state.hasError = true;
-            state.loading = false;
-        },
-        getToken: state => {
-            state.token.get = true;
-        },
-        getTokenSuccess: state => {
-            state.token.get = false;
-            state.token.success = true;
-            state.token.failed = false;
-        },
-        getTokenFailed: state => {
-            state.token.get = false;
-            state.token.success = false;
-            state.token.failed = true;
-        },
-        getUser: state => {
-            state.loading = true;
-        },
-        getUserSuccess: (state, { payload }) => {
-            // console.log(payload)
-            state.loading = false;
-            state.user.name = payload.user.name;
-            state.user.email = payload.user.email;
-            state.user.password = payload.user.password;
-        },
-        getUserFailed: state => {
-            state.hasError = true;
-            // state.user = initialState.user;
-        },
-        updateUser: state => {
-            state.loading = true;
-        },
-        updateUserSuccess: (state, { payload }) => {
-            state.loading = false;
-            state.user = payload;
-            //state.user.password = payload.user.password;
-        },
-        updateUserFailed: (state) => {
-            state.hasError = true;
-        },
-        logout: (state) => {
-            state.logoutRequest = true;
-        },
-        logoutSuccess: (state) => {
-            state.logoutRequest = false;
-            state.logoutFailed = false;
-        },
-        logoutFailed: (state) => {
-            state.logoutFailed = true;
-        }
+
+    },
+    extraReducers: builder => {
+        builder
+            // user registration
+            .addCase(registration.pending, state => { state.loading = true })
+            .addCase(registration.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.user = payload
+                getTokens(payload)
+            })
+            .addCase(registration.rejected, state => {
+                state.loading = false
+                state.hasError = true
+            })
+            // forgot password
+            .addCase(forgotPassword.pending, state => { state.loading = true })
+            .addCase(forgotPassword.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.forgotPass = true
+                console.log(payload)
+            })
+            .addCase(forgotPassword.rejected, state => {
+                state.hasError = true
+                state.forgotPass = false
+            })
+            // reset password
+            .addCase(resetPassword.pending, state => { state.loading = true })
+            .addCase(resetPassword.fulfilled, state => {
+                state.loading = false
+                state.forgotPass = false
+                state.resetPass = true
+            })
+            .addCase(resetPassword.rejected, state => { state.hasError = true })
+            // login
+            .addCase(login.pending, state => {
+                state.loading = true
+                state.resetPass = false
+            })
+            .addCase(login.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.user.name = payload.user.name;
+                state.user.email = payload.user.email;
+                state.user.password = payload.user.password;
+                state.isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', true);
+                getTokens(payload)
+            })
+            .addCase(login.rejected, state => { state.hasError = true })
+            // update token
+            .addCase(updateToken.fulfilled, (state, { payload }) => {
+                getTokens(payload)
+                // state.tokens.accessToken = payload.accessToken;
+                // state.tokens.refreshToken = payload.refreshToken;
+            })
+            .addCase(updateToken.rejected, state => { state.hasError = true })
+            // getUserInfo
+            .addCase(getUserInfo.pending, state => { state.loading = true })
+            .addCase(getUserInfo.fulfilled, (state, { payload }) => {
+                state.loading = false;
+                state.user.name = payload.name;
+                state.user.email = payload.email;
+                state.user.password = payload.password;
+                state.isLoggedIn = true;
+            })
+            .addCase(getUserInfo.rejected, state => { state.hasError = true })
+            // update user information
+            .addCase(updateUserInfo.pending, state => { state.loading = true })
+            .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.user = payload
+                state.isLoggedIn = true;
+            })
+            .addCase(updateUserInfo.rejected, state => { state.hasError = true })
+            // logout
+            .addCase(logout.fulfilled, (state, { payload }) => {
+                // state.tokens.accessToken = ''
+                // state.tokens.refreshToken = ''
+                state.isLoggedIn = false
+                state.user = initialState.user
+                localStorage.removeItem('refreshToken')
+                deleteCookie('token')
+            })
+            .addCase(logout.rejected, (state, { payload }) => {
+                state.hasError = true
+            })
     }
 })
 
-export const {
-    createUser, createUserSuccess, createUserFailed,
-    login, loginSuccess, loginFailed,
-    getToken, getTokenSuccess, getTokenFailed,
-    getUser, getUserSuccess, getUserFailed,
-    updateUser, updateUserSuccess, updateUserFailed,
-    logout, logoutSuccess, logoutFailed
-} = userRightsSlice.actions
+// export const {
+
+// } = userRightsSlice.actions
 
 export const userSelector = state => state.auth
 

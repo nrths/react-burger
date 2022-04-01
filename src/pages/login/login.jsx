@@ -1,14 +1,15 @@
 import styles from './login.module.css';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components"; //ShowIcon, HideIcon
+import { useDispatch, useSelector } from 'react-redux';
+import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation, Redirect } from 'react-router-dom';
-import { loginUser } from '../../services/thunks/auth-thunks';
+import { login } from '../../services/thunks/auth-thunks';
+import { userSelector } from '../../services/slices/authorization';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
+    const { isLoggedIn } = useSelector(userSelector);
     const location = useLocation();
-    const refreshToken = localStorage.refreshToken;
     const [formValue, setFormValue] = useState({
         email: '',
         password: ''
@@ -20,12 +21,12 @@ const LoginPage = () => {
     }
     const handleSubmit = e => {
         e.preventDefault();
-        dispatch(loginUser(formValue))
+        dispatch(login(formValue))
     }
 
     return (
         <>
-        {refreshToken ? (
+        {isLoggedIn ? (
             <Redirect to={location.state?.from || '/'} />
         ) :
          (<div className={styles.container}>

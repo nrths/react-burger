@@ -1,12 +1,20 @@
 import styles from './profile-nav.module.css';
-import { NavLink, useLocation } from 'react-router-dom'; // useHistory
-// import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../../services/thunks/auth-thunks';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../services/thunks/auth-thunks';
+
+
 
 export const ProfileNavigation = () => {
-
+    const history = useHistory();
     const { pathname } = useLocation();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+
+    
+    const logoutUser = () => {
+        dispatch(logout())
+        history.replace({ pathname: '/login' })
+    };
 
     return (
         <nav className={styles.nav}>
@@ -22,7 +30,7 @@ export const ProfileNavigation = () => {
                     </NavLink>
                 </li>
                 <li className={styles.list__item}>
-                    <NavLink to='/login' exact={true} onClick={logoutUser()} className={`${styles.link} text text_type_main-medium`} activeClassName={styles.link_active}>
+                    <NavLink to='/login' exact={true} onClick={logoutUser} className={`${styles.link} text text_type_main-medium`} activeClassName={styles.link_active}>
                         Выход
                     </NavLink>
                 </li>

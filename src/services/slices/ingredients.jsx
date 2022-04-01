@@ -1,4 +1,5 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { fetchIngredients, fetchOrderDetails } from '../thunks/ingredients-and-order-thunks';
 
 
 export const initialState = {
@@ -20,18 +21,6 @@ const ingredientsSlice = createSlice({
     name: 'ingredients',
     initialState,
     reducers: {
-        getIngredients: state => {
-            state.loading = true;
-        },
-        getIngredientsSuccess: (state, { payload }) => {
-            state.ingredients = payload
-            state.loading = false
-            state.hasError = false
-        },
-        getIngredientsFailed: state => {
-            state.loading = false
-            state.hasError = true
-        },
         showIngredientDetails: (state, { payload }) => {
             state.ingredientDetails = payload
             state.ingredientDetailsModal = true
@@ -63,20 +52,6 @@ const ingredientsSlice = createSlice({
             draggableIngredients[payload.dragIndex] = draggableIngredients.splice(payload.hoverIndex, 1, draggableIngredients[payload.dragIndex])[0]
             state.constructor.burger = draggableIngredients.concat(nonDraggableIngredients)
         },
-        getOrder: state => {
-            state.loading = true;
-        },
-        getOrderSuccess: (state, { payload }) => {
-            state.loading = false
-            state.orderNumber = payload.order.number
-            state.orderName = payload.name
-            state.orderDetailsModal = true
-        },
-        getOrderFailed: state => {
-            state.orderNumber = 0
-            state.orderName = 'Ой, не начали :('
-            state.orderDetailsModal = true
-        },
         closeOrderDetailsModal: state => {
             state.orderDetailsModal = false
             state.constructor.burger = []
@@ -84,18 +59,41 @@ const ingredientsSlice = createSlice({
             state.orderName = ''
         },
     },
+    extraReducers: builder => {
+        builder
+            .addCase(fetchIngredients.pending, state => { state.loading = true })
+            .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
+                state.ingredients = payload.data
+                state.loading = false
+                state.hasError = false
+            })
+            .addCase(fetchIngredients.rejected, state => {
+                state.loading = false
+                state.hasError = true
+            })
+            .addCase(fetchOrderDetails.pending, state => { state.loading = true })
+            .addCase(fetchOrderDetails.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.orderNumber = payload.order.number
+                state.orderName = payload.name
+                state.orderDetailsModal = true
+            })
+            .addCase(fetchOrderDetails.rejected, state => {
+                state.orderNumber = 0
+                state.orderName = 'Ой, не начали :('
+                state.orderDetailsModal = true
+            })
+            .addDefaultCase(() => {})
+    }
 })
 
 export const {
-    getIngredients,
-    getIngredientsSuccess,
-    getIngredientsFailed,
     showIngredientDetails,
     removeIngredientDetails,
     addIngredientInConstructorItem,
     deleteIngredientFromConstructorItem,
     clearConstructor,
-    getOrder, getOrderFailed, getOrderSuccess, closeOrderDetailsModal, dragItems 
+    closeOrderDetailsModal, dragItems
 } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients

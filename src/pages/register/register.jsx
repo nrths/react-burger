@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { registration } from '../../services/thunks/auth-thunks';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useLocation } from 'react-router-dom';
+import { userSelector } from '../../services/slices/authorization';
 import styles from './register.module.css';
 
 const RegistrationPage = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const refreshToken = localStorage.getItem('refreshToken');
+    const { isLoggedIn } = useSelector(userSelector)
     const [formValue, setFormValue] = useState({
         email: '',
         password: '', 
@@ -28,9 +29,9 @@ const RegistrationPage = () => {
 
     return (
         <>
-        {/* {refreshToken ? (
+        {isLoggedIn ? (
             <Redirect to={location.state?.from || '/'} />
-        ) :  */}
+        ) : 
         (
         <div className={`${styles.container}`}>
             <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
@@ -60,7 +61,7 @@ const RegistrationPage = () => {
                 <Link to={'/login'} className={`${styles.link} ml-2`}>Войти</Link>
             </span>
         </div>)
-        {/* } */}
+        }
         </>
     );
 };
