@@ -19,12 +19,12 @@ export const initialState = {
     //     refreshToken: '',
     // },
 
-    forgotPass: false,
+    forgotAndResetPass: false,
     resetPass: false,
     isLoggedIn: false,
 
     loading: false,
-    hasError: false,
+    hasError: '',
 }
 
 const userRightsSlice = createSlice({
@@ -50,25 +50,25 @@ const userRightsSlice = createSlice({
             .addCase(forgotPassword.pending, state => { state.loading = true })
             .addCase(forgotPassword.fulfilled, (state, { payload }) => {
                 state.loading = false
-                state.forgotPass = true
+                state.forgotAndResetPass = true
                 console.log(payload)
             })
             .addCase(forgotPassword.rejected, state => {
                 state.hasError = true
-                state.forgotPass = false
+                state.forgotAndResetPass = false
             })
             // reset password
             .addCase(resetPassword.pending, state => { state.loading = true })
             .addCase(resetPassword.fulfilled, state => {
                 state.loading = false
-                state.forgotPass = false
+                state.forgotAndResetPass = true
                 state.resetPass = true
             })
             .addCase(resetPassword.rejected, state => { state.hasError = true })
             // login
             .addCase(login.pending, state => {
                 state.loading = true
-                state.resetPass = false
+                state.forgotAndResetPass = false
             })
             .addCase(login.fulfilled, (state, { payload }) => {
                 state.loading = false;
@@ -76,15 +76,12 @@ const userRightsSlice = createSlice({
                 state.user.email = payload.user.email;
                 state.user.password = payload.user.password;
                 state.isLoggedIn = true;
-                localStorage.setItem('isLoggedIn', true);
                 getTokens(payload)
             })
-            .addCase(login.rejected, state => { state.hasError = true })
+            .addCase(login.rejected, (state, { payload }) => { state.hasError = `Ошибка: ${payload}` })
             // update token
             .addCase(updateToken.fulfilled, (state, { payload }) => {
                 getTokens(payload)
-                // state.tokens.accessToken = payload.accessToken;
-                // state.tokens.refreshToken = payload.refreshToken;
             })
             .addCase(updateToken.rejected, state => { state.hasError = true })
             // getUserInfo
@@ -94,7 +91,6 @@ const userRightsSlice = createSlice({
                 state.user.name = payload.name;
                 state.user.email = payload.email;
                 state.user.password = payload.password;
-                state.isLoggedIn = true;
             })
             .addCase(getUserInfo.rejected, state => { state.hasError = true })
             // update user information
@@ -111,7 +107,7 @@ const userRightsSlice = createSlice({
                 // state.tokens.refreshToken = ''
                 state.isLoggedIn = false
                 state.user = initialState.user
-                localStorage.removeItem('refreshToken')
+                localStorage.clear()
                 deleteCookie('token')
             })
             .addCase(logout.rejected, (state, { payload }) => {

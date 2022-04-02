@@ -7,7 +7,7 @@ import { resetPassword } from '../../services/thunks/auth-thunks';
 import { userSelector } from '../../services/slices/authorization';
 
 const ResetPasswordPage = () => {
-    const { resetPass, forgotPass, isLoggedIn } = useSelector(userSelector)
+    const { forgotAndResetPass, isLoggedIn } = useSelector(userSelector)
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -29,31 +29,40 @@ const ResetPasswordPage = () => {
     const handleSubmit = e => {
         e.preventDefault()
         dispatch(resetPassword(formValue))
-        setTimeout(redirection, 1000)
+        if (forgotAndResetPass) setTimeout(redirection, 1000)
+    }
+
+    if (isLoggedIn) {
+        return (
+            <Redirect to={'/login'} />
+        )
+    }
+
+    if (!isLoggedIn && !forgotAndResetPass) {
+        return (
+            <Redirect to={'/forgot-password'} />
+        )
     }
 
     return (
-        <>
-            {isLoggedIn ? (<Redirect to={'/login'} />) : (<div className={`${styles.container}`}>
-                <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
-                <form className={`${styles.form}`} onSubmit={handleSubmit}>
-                    <PasswordInput onChange={onChange} value={formValue.password} name={'password'} placeholder='введите новый пароль' />
-                    <Input type={'text'}
-                        placeholder={'Введите код из письма'}
-                        onChange={onChange}
-                        value={formValue.token}
-                        name={'token'}
-                        error={false}
-                        errorText={'Ошибка'}
-                        size={'default'} />
-                    <Button type="primary" size='medium'>Сохранить</Button>
-                </form>
-                <span className="text text_type_main-default text_color_inactive">Вспомнили пароль?
-                    <Link to='/login' className={`${styles.link} ml-2`}>Войти</Link>
-                </span>
-            </div>)}
-        </>
-
+        <div className={`${styles.container}`}>
+            <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
+            <form className={`${styles.form}`} onSubmit={handleSubmit}>
+                <PasswordInput onChange={onChange} value={formValue.password} name={'password'} placeholder='введите новый пароль' />
+                <Input type={'text'}
+                    placeholder={'Введите код из письма'}
+                    onChange={onChange}
+                    value={formValue.token}
+                    name={'token'}
+                    error={false}
+                    errorText={'Ошибка'}
+                    size={'default'} />
+                <Button type="primary" size='medium'>Сохранить</Button>
+            </form>
+            <span className="text text_type_main-default text_color_inactive">Вспомнили пароль?
+                <Link to='/login' className={`${styles.link} ml-2`}>Войти</Link>
+            </span>
+        </div>
     )
 }
 

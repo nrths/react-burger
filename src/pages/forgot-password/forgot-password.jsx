@@ -19,9 +19,13 @@ const ForgotPasswordPage = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        dispatch(forgotPassword(value)).then((response) => {
-            response.payload.success && setTimeout(redirection, 1000)
-        })
+        if (value === '') {
+            alert('Пожалуйста введите ваш e-mail')
+        } else {
+            dispatch(forgotPassword(value)).then((response) => {
+                response && response.payload.success && setTimeout(redirection, 1000)
+            })
+        }
     }
 
 

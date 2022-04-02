@@ -90,11 +90,11 @@ function BurgerIngredients() {
             <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
       </div>
-      {ingredientDetailsModal && <>
+      {/* {ingredientDetailsModal && <>
         <Modal onClose={() => dispatch(removeIngredientDetails())} title={"Детали ингредиента"}>
           <IngredientDetails ingredient={ingredientDetails}/>
         </Modal>
-      </>}
+      </>} */}
     </section>
   );
 }

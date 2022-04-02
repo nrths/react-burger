@@ -14,7 +14,7 @@ export const initialState = {
     },
     orderNumber: 0,
     orderName: '',
-    orderDetailsModal: false
+    orderDetailsModal: false,
 }
 
 const ingredientsSlice = createSlice({
@@ -24,6 +24,7 @@ const ingredientsSlice = createSlice({
         showIngredientDetails: (state, { payload }) => {
             state.ingredientDetails = payload
             state.ingredientDetailsModal = true
+
             console.log(payload)
         },
         removeIngredientDetails: state => {
@@ -64,6 +65,9 @@ const ingredientsSlice = createSlice({
             .addCase(fetchIngredients.pending, state => { state.loading = true })
             .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
                 state.ingredients = payload.data
+                localStorage.setItem('storageIngredients', payload.data)
+                
+                console.log(localStorage)
                 state.loading = false
                 state.hasError = false
             })

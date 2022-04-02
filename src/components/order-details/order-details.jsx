@@ -1,11 +1,13 @@
 import { useSelector } from 'react-redux';
 import { ingredientsSelector } from '../../services/slices/ingredients';
+
 import styles from './order-details.module.css';
 import orderStatusOK from '../../images/order-ok.gif';
 
 
 function OrderDetails() {
     const { orderName, orderNumber } = useSelector(ingredientsSelector);
+    
     return (
         <div className={`${styles.order} pl-10 pr-10 pt-30 pb-30`}>
             <span className={`${styles.orderID} text text_type_digits-large mb-8`}>{orderNumber}</span>

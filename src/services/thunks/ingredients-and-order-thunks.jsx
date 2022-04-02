@@ -1,5 +1,6 @@
 import { baseUrl, checkResponse } from '../../utils/data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { getCookie } from '../../utils/cookies';
 
 export const fetchIngredients = createAsyncThunk(
     'ingredients/fetchIngredients',
@@ -18,9 +19,12 @@ export const fetchOrderDetails = createAsyncThunk(
     'ingredients/fetchOrderDetails',
     async (ingredients, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${baseUrl}/orders`, { 
+            const response = await fetch(`${baseUrl}/orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getCookie('token')}`
+                },
                 body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
             })
             const data = await checkResponse(response)

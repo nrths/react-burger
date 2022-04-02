@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { fetchIngredients } from '../../services/thunks/ingredients-and-order-thunks';
-import { getUserInfo } from '../../services/thunks/auth-thunks';
+import { getUserInfo, updateToken } from '../../services/thunks/auth-thunks';
+import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients';
 
 import AppHeader from "../app-header/app-header";
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from "../modal/modal";
 import {
   HomePage, LoginPage, RegistrationPage,
   ForgotPasswordPage, ResetPasswordPage, NotFoundPage,
@@ -16,14 +19,21 @@ const App = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const location = useLocation()
-  
-  const background = location.state && location.state.background;
+  const location = useLocation()  
+  const background = location.state?.background;
+  // const {ingredients} = useSelector(ingredientsSelector)
+  // const viewedIngredient = ingredients.find(item => item._id === ID)
+  // const ID = location.pathname.split('/ingredients/')[1]
 
   useEffect(() => {
     dispatch(fetchIngredients())
-    dispatch(getUserInfo())
+    dispatch(updateToken())
   }, [dispatch]);
+
+  const onCloseModal = () => {
+    // dispatch(removeIngredientDetails())
+    history.goBack();
+  }
 
   return (
     <>
@@ -50,10 +60,21 @@ const App = () => {
           <LoginPage />
         </Route>
 
+        <Route path='/ingredients/:id' exact={true}>
+          <IngredientDetails />
+        </Route>
         <Route>
           <NotFoundPage />
         </Route>
       </Switch>
+
+      {background &&
+          <Route path='/ingredients/:id' >
+            <Modal onClose={onCloseModal} title={'Детали ингредиента'}>
+              <IngredientDetails/>
+            </Modal>
+          </Route>
+        }
 
     </>
   )

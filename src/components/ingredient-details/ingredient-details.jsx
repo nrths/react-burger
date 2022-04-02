@@ -1,15 +1,25 @@
 import styles from "./ingredient-details.module.css";
 import dataPropTypes from '../../utils/types';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ingredientsSelector } from '../../services/slices/ingredients';
 
-function IngredientDetails({ ingredient }) {
+const IngredientDetails = () => {
+  const { ingredientDetails } = useSelector(ingredientsSelector)
+
+  const { id } = useParams();
+  const storageIngredients = localStorage.getItem('storageIngredients')
+  
+  const card = ingredientDetails
+
   return (
-    <div className={`${styles.ingredient} pb-15`}>
+    card && <div className={`${styles.ingredient} pb-15`}>
       <img
-        src={ingredient.image_large}
-        alt={ingredient.name}
+        src={card.image_large}
+        alt={card.name}
         className={`${styles.nutrient_image} mb-4`}
       />
-      <p className="text text_type_main-medium mb-8">{ingredient.name}</p>
+      <p className="text text_type_main-medium mb-8">{card.name}</p>
 
       <ul className={styles.nutrients}>
         <li className={`${styles.nutrient} mr-5`}>
@@ -17,7 +27,7 @@ function IngredientDetails({ ingredient }) {
             Калории, ккал
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {ingredient.calories}
+            {card.calories}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -25,7 +35,7 @@ function IngredientDetails({ ingredient }) {
             Белки, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {ingredient.proteins}
+            {card.proteins}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -33,7 +43,7 @@ function IngredientDetails({ ingredient }) {
             Жиры, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {ingredient.fat}
+            {card.fat}
           </p>
         </li>
         <li className={`${styles.nutrient} mr-5`}>
@@ -41,7 +51,7 @@ function IngredientDetails({ ingredient }) {
             Углеводы, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {ingredient.carbohydrates}
+            {card.carbohydrates}
           </p>
         </li>
       </ul>
@@ -49,8 +59,8 @@ function IngredientDetails({ ingredient }) {
   );
 }
 
-IngredientDetails.propTypes = {
-  ingredient: dataPropTypes.isRequired
-};
+// IngredientDetails.propTypes = {
+//   ingredient: dataPropTypes.isRequired
+// };
 
 export default IngredientDetails;

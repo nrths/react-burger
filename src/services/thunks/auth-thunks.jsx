@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseUrl, checkResponse } from '../../utils/data';
 import { getCookie } from '../../utils/cookies';
+import { getTokens } from '../../utils/tokens';
 
 export const registration = createAsyncThunk(
     'auth/registration',
@@ -46,12 +47,13 @@ export const updateToken = createAsyncThunk(
                 body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
             })
             const data = await checkResponse(response)
-            return data
+            return data       
         } catch (err) {
-            if (err.message === 'Token is invalid') {
+            console.error(err)
+            if (err === 'Token is invalid') {
                 updateToken()
             } else {
-                return rejectWithValue(err.message)
+                return rejectWithValue(err)
             }
         }
     }
