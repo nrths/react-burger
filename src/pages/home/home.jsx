@@ -17,16 +17,20 @@ const HomePage = () => {
         if (hasError) return <Error />
 
         return <>
-            <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-            </DndProvider>
+            <main className={styles.main}>
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                </DndProvider>
+            </main>
         </>
     }
 
-    return <main className={styles.main}>
+    return <div>
         {renderIngredients()}
-    </main>
+    </div>
+
+
 }
 
 export default HomePage;

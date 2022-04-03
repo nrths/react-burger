@@ -29,7 +29,7 @@ export const login = createAsyncThunk(
                 body: JSON.stringify(form)
             })
             const data = await checkResponse(response);
-            return data            
+            return data
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -43,13 +43,9 @@ export const updateToken = createAsyncThunk(
             const response = await fetch(`${baseUrl}/auth/token`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+                body: JSON.stringify({ 'token': getCookie('refreshToken') })
             })
-            const data = await checkResponse(response)
-
-            if (data.message === 'Token is invalid') {
-                updateToken()
-            }
+            const data = await checkResponse(response);
             return data
         } catch (err) {
             return rejectWithValue(err.message)
@@ -76,7 +72,7 @@ export const getUserInfo = createAsyncThunk(
                 })
                 const data = await checkResponse(response)
                 return data.user
-            } else if (localStorage.getItem('refreshToken')) {
+            } else {
                 updateToken()
                 getUserInfo()
             }
@@ -107,8 +103,8 @@ export const updateUserInfo = createAsyncThunk(
                 const data = await checkResponse(response)
                 return data.user
             } else {
-                updateToken()
-                updateUserInfo(form)
+                await updateToken()
+                await getUserInfo(form)
             }
         } catch (err) {
             return rejectWithValue(err.message)
@@ -126,7 +122,7 @@ export const logout = createAsyncThunk(
                     "Content-Type": "application/json",
                     'Authorization': getCookie('token')
                 },
-                body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+                body: JSON.stringify({ token: getCookie('refreshToken') })
             })
             const data = await checkResponse(response)
             return data

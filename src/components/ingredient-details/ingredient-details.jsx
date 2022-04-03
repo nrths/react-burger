@@ -1,18 +1,20 @@
 import styles from "./ingredient-details.module.css";
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ingredientsSelector } from '../../services/slices/ingredients';
 
 const IngredientDetails = () => {
-  const { ingredientDetails } = useSelector(ingredientsSelector)
+  const { ingredients } = useSelector(ingredientsSelector)
 
   const { id } = useParams();
-  const storageIngredients = JSON.parse(localStorage.getItem('storageIngredients')).find(item => item._id === id)
+  const selectedIngredient = useMemo(() => ingredients.find(item => item._id === id), [ingredients, id])
 
-  const card = ingredientDetails || storageIngredients
+  const card = selectedIngredient
 
   return (
-    card && <div style={card === storageIngredients ? { marginTop: '200px' } : { marginTop: '0'}}>
+    <>
+    {card && 
       <div className={`${styles.ingredient} pb-15`}>
         <img
           src={card.image_large}
@@ -55,8 +57,8 @@ const IngredientDetails = () => {
             </p>
           </li>
         </ul>
-      </div>
-    </div>
+      </div>}
+      </>
   );
 }
 

@@ -8,7 +8,7 @@ import { userSelector } from '../../services/slices/authorization';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
-    const { isLoggedIn, preLogged, error } = useSelector(userSelector);
+    const { isLoggedIn, error } = useSelector(userSelector);
     const location = useLocation();
     const [formValue, setFormValue] = useState({
         email: '',
@@ -26,7 +26,7 @@ const LoginPage = () => {
 
     return (
         <>
-        {(isLoggedIn && preLogged) ? (
+        {isLoggedIn ? (
             <Redirect to={location.state?.from || '/'} />
         ) :
          (<div className={styles.container}>

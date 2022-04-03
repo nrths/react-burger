@@ -5,5 +5,5 @@ export const getTokens = res => {
     const refreshToken = res.refreshToken;
 
     setCookie('token', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    setCookie('refreshToken', refreshToken);
 }

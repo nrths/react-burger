@@ -1,6 +1,6 @@
 .spin_wrapper {
     position: relative;
-    max-width: 1240px;
+    width: 100wh;
     height: 100vh;
     background: #1c1c21;
 }

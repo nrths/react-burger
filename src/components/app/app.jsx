@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { fetchIngredients } from '../../services/thunks/ingredients-and-order-thunks';
-import { checkPreLogin } from '../../services/slices/authorization';
+import { getUserInfo, updateToken } from '../../services/thunks/auth-thunks';
+import { checkPreLogin, userSelector } from '../../services/slices/authorization';
+import { getCookie } from '../../utils/cookies';
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -10,21 +12,30 @@ import Modal from "../modal/modal";
 import {
   HomePage, LoginPage, RegistrationPage,
   ForgotPasswordPage, ResetPasswordPage, NotFoundPage,
-  ProfilePage
+  ProfilePage, IngredientDetailsPage
 } from '../../pages';
 import { ProtectedRoute } from '../protected-route';
 
 const App = () => {
 
   const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector(userSelector)
   const history = useHistory()
   const location = useLocation()  
   const background = location.state?.background;
 
   useEffect(() => {
     dispatch(fetchIngredients())
+    if (getCookie('refreshToken')) {
+      dispatch(getUserInfo())
+      if (!isLoggedIn) {
+        dispatch(updateToken())
+        dispatch(getUserInfo())
+      }
+    }
     dispatch(checkPreLogin())
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onCloseModal = () => {
     history.goBack();
@@ -56,7 +67,7 @@ const App = () => {
         </Route>
 
         <Route path='/ingredients/:id' exact={true}>
-          <IngredientDetails />
+          <IngredientDetailsPage />
         </Route>
         <Route>
           <NotFoundPage />
