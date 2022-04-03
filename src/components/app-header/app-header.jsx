@@ -9,7 +9,14 @@ import { useLocation, NavLink } from 'react-router-dom';
 
 const AppHeader = () => {
 
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const changeProfileIcon = () => {
+    if (location.pathname !== '/profile' && location.pathname !== '/profile/orders') {
+      return 'secondary'
+    } else {
+      return 'primary'
+    }
+  }
 
   return (
     <header className={styles.header}>
@@ -17,13 +24,14 @@ const AppHeader = () => {
         <ul className={styles.list}>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
             <NavLink to='/' exact className={`${styles.link} + mr-2`} activeClassName={styles.link_active}>
-              <BurgerIcon type={ pathname === '/' ? 'primary' : 'secondary' } />
+              <BurgerIcon type={ location.pathname === '/' ? 'primary' : 'secondary' } />
               <p className="text text_type_main-default ml-2">Конструктор</p>
             </NavLink>
           </li>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
+            {/* temporary path */}
             <NavLink to='/лента-заказов' className={styles.link} activeClassName={styles.link_active}>
-              <ListIcon type={ pathname === '/лента-заказов' ? 'primary' : 'secondary' } />
+              <ListIcon type={ location.pathname === '/лента-заказов' ? 'primary' : 'secondary' } />
               <p className="text text_type_main-default ml-2">
                 Лента заказов
               </p>
@@ -38,7 +46,7 @@ const AppHeader = () => {
           </li>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
             <NavLink to='/profile' className={styles.link} activeClassName={styles.link_active}>
-              <ProfileIcon type={ pathname === '/profile' && '/profile/orders' ? 'primary' : 'secondary' } />
+              <ProfileIcon type={changeProfileIcon()} />
               <p className="text text_type_main-default ml-2">
                 Личный кабинет
               </p>

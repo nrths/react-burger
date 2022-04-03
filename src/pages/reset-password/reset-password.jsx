@@ -7,7 +7,7 @@ import { resetPassword } from '../../services/thunks/auth-thunks';
 import { userSelector } from '../../services/slices/authorization';
 
 const ResetPasswordPage = () => {
-    const { forgotAndResetPass, isLoggedIn } = useSelector(userSelector)
+    const { forgotAndResetPass, isLoggedIn, preLogged, error } = useSelector(userSelector)
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -29,10 +29,10 @@ const ResetPasswordPage = () => {
     const handleSubmit = e => {
         e.preventDefault()
         dispatch(resetPassword(formValue))
-        if (forgotAndResetPass) setTimeout(redirection, 1000)
+        if (forgotAndResetPass) setTimeout(redirection, 5000)
     }
 
-    if (isLoggedIn) {
+    if (isLoggedIn && preLogged) {
         return (
             <Redirect to={'/login'} />
         )
@@ -57,6 +57,8 @@ const ResetPasswordPage = () => {
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'} />
+
+                {error && <span className={`${styles.err} text_type_main-medium mb-3`}>{error}</span>}
                 <Button type="primary" size='medium'>Сохранить</Button>
             </form>
             <span className="text text_type_main-default text_color_inactive">Вспомнили пароль?

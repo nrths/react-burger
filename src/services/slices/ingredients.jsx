@@ -65,7 +65,7 @@ const ingredientsSlice = createSlice({
             .addCase(fetchIngredients.pending, state => { state.loading = true })
             .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
                 state.ingredients = payload.data
-                localStorage.setItem('storageIngredients', payload.data)
+                localStorage.setItem('storageIngredients', JSON.stringify(payload.data))
                 
                 console.log(localStorage)
                 state.loading = false

@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registration } from '../../services/thunks/auth-thunks';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { userSelector } from '../../services/slices/authorization';
 import styles from './register.module.css';
 
 const RegistrationPage = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const { isLoggedIn } = useSelector(userSelector)
+    const history = useHistory();
+    const { isLoggedIn, registerSuccess } = useSelector(userSelector)
     const [formValue, setFormValue] = useState({
         email: '',
         password: '', 
@@ -22,9 +23,14 @@ const RegistrationPage = () => {
         })
     }
 
+    const redirection = () => {
+        history.push('/login')
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         dispatch(registration(formValue))
+        if (registerSuccess === true) setTimeout(redirection, 2000)
     }
 
     return (

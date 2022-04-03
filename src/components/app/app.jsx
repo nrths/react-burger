@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { fetchIngredients } from '../../services/thunks/ingredients-and-order-thunks';
-import { getUserInfo, updateToken } from '../../services/thunks/auth-thunks';
-import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients';
+import { checkPreLogin } from '../../services/slices/authorization';
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -21,17 +20,13 @@ const App = () => {
   const history = useHistory()
   const location = useLocation()  
   const background = location.state?.background;
-  // const {ingredients} = useSelector(ingredientsSelector)
-  // const viewedIngredient = ingredients.find(item => item._id === ID)
-  // const ID = location.pathname.split('/ingredients/')[1]
 
   useEffect(() => {
     dispatch(fetchIngredients())
-    dispatch(updateToken())
+    dispatch(checkPreLogin())
   }, [dispatch]);
 
   const onCloseModal = () => {
-    // dispatch(removeIngredientDetails())
     history.goBack();
   }
 
@@ -53,7 +48,7 @@ const App = () => {
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
-        <ProtectedRoute path="/profile" exact={true}>
+        <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
         <Route path="/login" exact={true}>

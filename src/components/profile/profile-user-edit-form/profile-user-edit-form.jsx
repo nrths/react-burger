@@ -4,13 +4,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../../services/slices/authorization';
 import { getUserInfo, updateUserInfo } from '../../../services/thunks/auth-thunks';
+import { resetUpdateMessage } from '../../../services/slices/authorization';
 
 export const ProfileEditForm = () => {
     const nameInputRef = useRef(null);
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
     const dispatch = useDispatch();
-    const { user } = useSelector(userSelector);
+    const { user, updated, error } = useSelector(userSelector);
 
     const [formValue, setFormValue] = useState({
         email: user.email,
@@ -36,6 +37,11 @@ export const ProfileEditForm = () => {
             password: '',
             name: user.name,
         })
+        setShowButton(false)
+    }
+
+    const onFocus = () => {
+        dispatch(resetUpdateMessage())
     }
 
     const onChange = e => {
@@ -69,6 +75,7 @@ export const ProfileEditForm = () => {
                         type={'text'}
                         placeholder={'Имя'}
                         onChange={onChange}
+                        onFocus={onFocus}
                         icon={(formValue.name === user.name) ? 'EditIcon' : 'CloseIcon'}
                         value={formValue.name}
                         name={'name'}
@@ -78,9 +85,10 @@ export const ProfileEditForm = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                     />}
-                    {<Input type={'text'}
+                    {<Input type={'email'}
                         placeholder={'E-mail'}
                         onChange={onChange}
+                        onFocus={onFocus}
                         icon={(formValue.email === user.email) ? 'EditIcon' : 'CloseIcon'}
                         value={formValue.email}
                         name={'email'}
@@ -93,6 +101,7 @@ export const ProfileEditForm = () => {
                     {<Input type={'password'}
                         placeholder={'Пароль'}
                         onChange={onChange}
+                        onFocus={onFocus}
                         icon={(formValue.password === '') ? 'EditIcon' : 'CloseIcon'}
                         value={formValue.password}
                         name={'password'}
@@ -107,6 +116,9 @@ export const ProfileEditForm = () => {
                         <Button type="primary" size='medium' onClick={onSubmit} className={`${styles.button}`}>Сохранить</Button>
                         <Button type="secondary" size='medium' onClick={onReset} className={`${styles.button}`}>Отмена</Button>
                     </div>}
+
+                    {updated && <span className={`${styles.success} text text_type_main-small text_color_inactive mb-3`}>Данные обновлены!</span>}
+                    {error && <span className={`${styles.err} text_type_main-medium mb-4`}>{error}</span>}
                 </form>
             </div>
         </>

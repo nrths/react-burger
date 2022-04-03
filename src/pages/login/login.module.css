@@ -35,3 +35,8 @@
     text-decoration: none;
     color: #4C4CFF;
 }
+
+.err {
+    color: #990000;
+    text-align: center;
+}

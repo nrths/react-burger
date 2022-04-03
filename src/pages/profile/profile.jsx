@@ -1,5 +1,5 @@
 import styles from './profile.module.css';
-import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getUserInfo, updateToken } from '../../services/thunks/auth-thunks';
@@ -9,8 +9,7 @@ import { ProfileOrders } from '../../components/profile/order-history/order-hist
 
 
 const ProfilePage = () => {
-    const { path } = useRouteMatch();
-    const location = useLocation();
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -23,13 +22,12 @@ const ProfilePage = () => {
         <div className={`${styles.container} pr-5 pl-5`}>
             <ProfileNavigation />
             <Switch>
-                <Route path={`${path}`} exact={true}>
+                <Route path='/profile' exact={true}>
                     <ProfileEditForm />
                 </Route>
-                <Route path={`${path}/orders`} exact={true}>
+                <Route path='/profile/orders' exact={true}>
                     <ProfileOrders />
                 </Route>
-                {/* logout link */}
             </Switch>
         </div>
     )

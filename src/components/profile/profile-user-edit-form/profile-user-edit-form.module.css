@@ -26,3 +26,12 @@
     display: flex;
     flex-direction: row-reverse;
 }
+
+.err {
+    color: #990000;
+    text-align: center;
+}
+
+.success {
+    text-align: center;
+}

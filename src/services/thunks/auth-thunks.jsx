@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseUrl, checkResponse } from '../../utils/data';
 import { getCookie } from '../../utils/cookies';
-import { getTokens } from '../../utils/tokens';
 
 export const registration = createAsyncThunk(
     'auth/registration',
@@ -30,7 +29,7 @@ export const login = createAsyncThunk(
                 body: JSON.stringify(form)
             })
             const data = await checkResponse(response);
-            return data
+            return data            
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -47,14 +46,13 @@ export const updateToken = createAsyncThunk(
                 body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
             })
             const data = await checkResponse(response)
-            return data       
-        } catch (err) {
-            console.error(err)
-            if (err === 'Token is invalid') {
+
+            if (data.message === 'Token is invalid') {
                 updateToken()
-            } else {
-                return rejectWithValue(err)
             }
+            return data
+        } catch (err) {
+            return rejectWithValue(err.message)
         }
     }
 )
@@ -92,28 +90,28 @@ export const updateUserInfo = createAsyncThunk(
     'auth/updateUserInfo',
     async (form, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${baseUrl}/auth/user`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${getCookie('token')}`
-                },
-                body: JSON.stringify(form),
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-            })
-            const data = await checkResponse(response)
-            return data.user
-        } catch (err) {
-            if (err.message === 'jwt expired' || err.message === 'Token is invalid') {
+            if (getCookie('token')) {
+                const response = await fetch(`${baseUrl}/auth/user`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${getCookie('token')}`
+                    },
+                    body: JSON.stringify(form),
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                })
+                const data = await checkResponse(response)
+                return data.user
+            } else {
                 updateToken()
                 updateUserInfo(form)
-            } else {
-                return rejectWithValue(err.message)
             }
+        } catch (err) {
+            return rejectWithValue(err.message)
         }
     }
 )
@@ -165,6 +163,7 @@ export const resetPassword = createAsyncThunk(
                 body: JSON.stringify(form)
             })
             const data = await checkResponse(response)
+            console.log(data)
             return data
         } catch (err) {
             return rejectWithValue(err.message)

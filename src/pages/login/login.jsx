@@ -8,7 +8,7 @@ import { userSelector } from '../../services/slices/authorization';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
-    const { isLoggedIn } = useSelector(userSelector);
+    const { isLoggedIn, preLogged, error } = useSelector(userSelector);
     const location = useLocation();
     const [formValue, setFormValue] = useState({
         email: '',
@@ -26,7 +26,7 @@ const LoginPage = () => {
 
     return (
         <>
-        {isLoggedIn ? (
+        {(isLoggedIn && preLogged) ? (
             <Redirect to={location.state?.from || '/'} />
         ) :
          (<div className={styles.container}>
@@ -42,6 +42,7 @@ const LoginPage = () => {
                     size={'default'} />
                 <PasswordInput onChange={onChange} value={formValue.password} name={'password'} />
                 <Button type="primary" size='medium'>Войти</Button> 
+                {error && <span className={`${styles.err} text text_type_main-medium`}>{error}</span>}
             </form>
             <div className={`${styles.lines__container} mt-20`}>
                 <span className="text text_type_main-default text_color_inactive">Вы — новый пользователь?

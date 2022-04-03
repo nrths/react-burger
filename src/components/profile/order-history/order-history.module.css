@@ -1,7 +1,6 @@
 .container {
     display: flex;
-    margin: 200px auto 0;
-    max-width: 860px;
+    margin: 60px auto 0;
 }
 
 .text {

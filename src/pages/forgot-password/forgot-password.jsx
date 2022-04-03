@@ -11,7 +11,7 @@ const ForgotPasswordPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { isLoggedIn } = useSelector(userSelector)
+    const { isLoggedIn, preLogged } = useSelector(userSelector)
 
     const redirection = () => {
         history.push('/reset-password')
@@ -28,23 +28,24 @@ const ForgotPasswordPage = () => {
         }
     }
 
-
     return (
         <>
-            {isLoggedIn ? (
+            {(isLoggedIn || preLogged) ? (
                 <Redirect to={location.state?.from || '/'} />
             ) :
                 (<div className={`${styles.container}`}>
                     <h1 className='text text_type_main-medium'>Восстановление пароля</h1>
                     <form className={`${styles.form}`} onSubmit={handleSubmit}>
-                        <Input type={'text'}
+                        <Input type={'email'}
                             placeholder={'Укажите e-mail'}
                             onChange={e => setValue(e.target.value)}
                             value={value}
                             name={'email'}
                             error={false}
                             errorText={'Ошибка'}
-                            size={'default'} />
+                            size={'default'}
+                            // узнать почему не работает паттерн
+                            pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$' />
                         <Button type="primary" size='medium'>Восстановить</Button>
                     </form>
                     <span className="text text_type_main-default text_color_inactive">Вспомнили пароль?

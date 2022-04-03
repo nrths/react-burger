@@ -6,8 +6,4 @@ export const getTokens = res => {
 
     setCookie('token', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
-
-    console.log(accessToken)
-    console.log(refreshToken)
-    console.log(localStorage)
 }
