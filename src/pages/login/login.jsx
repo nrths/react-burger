@@ -1,10 +1,10 @@
 import styles from './login.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PasswordInput, Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation, Redirect } from 'react-router-dom';
 import { login } from '../../services/thunks/auth-thunks';
-import { userSelector } from '../../services/slices/authorization';
+import { userSelector, resetErrors } from '../../services/slices/authorization';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -23,6 +23,11 @@ const LoginPage = () => {
         e.preventDefault();
         dispatch(login(formValue))
     }
+
+    useEffect(() => {
+        dispatch(resetErrors())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <>

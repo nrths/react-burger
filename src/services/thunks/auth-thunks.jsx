@@ -38,13 +38,17 @@ export const login = createAsyncThunk(
 
 export const updateToken = createAsyncThunk(
     'auth/updateToken',
-    async (token, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await fetch(`${baseUrl}/auth/token`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'token': getCookie('refreshToken') })
+                body: JSON.stringify({ token: getCookie('refreshToken') })
             })
+            console.log(response)
+            if (response.status !== 200) {
+                updateToken()
+            }
             const data = await checkResponse(response);
             return data
         } catch (err) {
@@ -57,12 +61,12 @@ export const getUserInfo = createAsyncThunk(
     'auth/getUserInfo',
     async (token, { rejectWithValue }) => {
         try {
-            if (getCookie('token')) {
+            if (getCookie('accessToken')) {
                 const response = await fetch(`${baseUrl}/auth/user`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${getCookie('token')}`
+                        'authorization': getCookie('accessToken')
                     },
                     mode: 'cors',
                     cache: 'no-cache',
@@ -71,7 +75,7 @@ export const getUserInfo = createAsyncThunk(
                     referrerPolicy: 'no-referrer',
                 })
                 const data = await checkResponse(response)
-                return data.user
+                return data
             } else {
                 updateToken()
                 getUserInfo()
@@ -86,12 +90,12 @@ export const updateUserInfo = createAsyncThunk(
     'auth/updateUserInfo',
     async (form, { rejectWithValue }) => {
         try {
-            if (getCookie('token')) {
+            if (getCookie('accessToken')) {
                 const response = await fetch(`${baseUrl}/auth/user`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${getCookie('token')}`
+                        'authorization': getCookie('accessToken')
                     },
                     body: JSON.stringify(form),
                     mode: 'cors',
@@ -120,7 +124,7 @@ export const logout = createAsyncThunk(
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': getCookie('token')
+                    'authorization': getCookie('accessToken')
                 },
                 body: JSON.stringify({ token: getCookie('refreshToken') })
             })

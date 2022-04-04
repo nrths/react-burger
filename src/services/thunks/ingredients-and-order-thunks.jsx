@@ -23,7 +23,7 @@ export const fetchOrderDetails = createAsyncThunk(
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${getCookie('token')}`
+                    'authorization': getCookie('accessToken')
                 },
                 body: JSON.stringify({ ingredients: ingredients.map(i => i._id) })
             })
