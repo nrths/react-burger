@@ -1,6 +1,7 @@
 import dataPropTypes from '../../utils/types';
 import styles from "./burger-ingredient.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import { Link, useLocation } from 'react-router-dom';
 import { showIngredientDetails, ingredientsSelector } from "../../services/slices/ingredients";
 import { useDrag } from 'react-dnd';
 import {
@@ -9,12 +10,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerIngredient = ({ item }) => {
-  const {constructor} = useSelector(ingredientsSelector)
+  const { constructor } = useSelector(ingredientsSelector)
   const constructorItems = constructor.burger
   const count = constructorItems.filter(element => element._id === item._id).length;
   const bunCount = 1;
  
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const location = useLocation()
 
   const [{ isDrag }, dragRef] = useDrag({
     type: 'ingredient',
@@ -31,7 +33,7 @@ const BurgerIngredient = ({ item }) => {
   if (item.type === 'bun') {
     return (!isDrag &&
       <li onClick={() => dispatch(showIngredientDetails(item))} className={`${styles.card}`}>
-        <a ref={dragRef} href="#" className={`${styles.link}`}>
+        <Link ref={dragRef} to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }} className={`${styles.link}`}>
           <img
             src={item.image}
             alt={item.name}
@@ -45,13 +47,13 @@ const BurgerIngredient = ({ item }) => {
             {item.name}
           </p>
           {count > 0 && <Counter count={bunCount} size="default" />}
-        </a>
+        </Link>
       </li>
     )
   } else {
     return (
       <li onClick={() => dispatch(showIngredientDetails(item))} className={`${styles.card}`}>
-        <a href="#" ref={dragRef} className={`${styles.link}`}>
+        <Link ref={dragRef} to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }} className={`${styles.link}`}>
           <img
             src={item.image}
             alt={item.name}
@@ -65,7 +67,7 @@ const BurgerIngredient = ({ item }) => {
             {item.name}
           </p>
           {count > 0 && <Counter count={count} size="default" />}
-        </a>
+        </Link>
       </li>
     )
   }

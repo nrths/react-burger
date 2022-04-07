@@ -1,19 +1,16 @@
 import { useState, useRef, useMemo } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from "./burger-ingredients.module.css";
 import {
   Tab
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from '../burger-ingredient/burger-ingredient';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ingredientsSelector, removeIngredientDetails } from "../../services/slices/ingredients";
+import { ingredientsSelector } from "../../services/slices/ingredients";
 
 function BurgerIngredients() {
   
   const [current, setCurrent] = useState('bun');
-  const { ingredients, ingredientDetailsModal, ingredientDetails } = useSelector(ingredientsSelector);
-  const dispatch = useDispatch();
+  const { ingredients } = useSelector(ingredientsSelector);
   
   const buns = useMemo(() => ingredients.filter((products) => products.type === "bun"), [ingredients])
   const sauces = useMemo(() => ingredients.filter((products) => products.type === "sauce"), [ingredients])
@@ -90,11 +87,6 @@ function BurgerIngredients() {
             <BurgerIngredient item={ingredient} key={ingredient._id} />)}
         </ul>
       </div>
-      {ingredientDetailsModal && <>
-        <Modal onClose={() => dispatch(removeIngredientDetails())} title={"Детали ингредиента"}>
-          <IngredientDetails ingredient={ingredientDetails}/>
-        </Modal>
-      </>}
     </section>
   );
 }

@@ -1,0 +1,75 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registration } from '../../services/thunks/auth-thunks';
+import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { userSelector } from '../../services/slices/authorization';
+import styles from './register.module.css';
+
+const RegistrationPage = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory();
+    const { isLoggedIn, registerSuccess } = useSelector(userSelector)
+    const [formValue, setFormValue] = useState({
+        email: '',
+        password: '', 
+        name: '' 
+    })
+
+    const onChange = e => {
+        setFormValue({
+            ...formValue, [e.target.name]: e.target.value
+        })
+    }
+
+    const redirection = () => {
+        history.push('/login')
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        dispatch(registration(formValue))
+        if (registerSuccess === true) setTimeout(redirection, 2000)
+    }
+
+    return (
+        <>
+        {isLoggedIn ? (
+            <Redirect to={location.state?.from || '/'} />
+        ) : 
+        (
+        <div className={`${styles.container}`}>
+            <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
+            <form className={`${styles.form}`} onSubmit={handleSubmit}>
+                <Input type={'text'}
+                    placeholder={'Имя'}
+                    onChange={onChange}
+                    value={formValue.name}
+                    name={'name'}
+                    error={false}
+                    errorText={'Ошибка'}
+                    size={'default'} 
+                />
+                <Input type={'text'}
+                    placeholder={'E-mail'}
+                    onChange={onChange}
+                    value={formValue.email}
+                    name={'email'}
+                    error={false}
+                    errorText={'Ошибка'}
+                    size={'default'} 
+                />
+                <PasswordInput onChange={onChange} value={formValue.password} name={'password'} />
+                <Button type="primary" size='medium'>Зарегистрироваться</Button>
+            </form>
+            <span className="text text_type_main-default text_color_inactive">Уже зарегистрированы?
+                <Link to={'/login'} className={`${styles.link} ml-2`}>Войти</Link>
+            </span>
+        </div>)
+        }
+        </>
+    );
+};
+
+export default RegistrationPage;
