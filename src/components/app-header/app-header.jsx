@@ -29,9 +29,8 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
-            {/* temporary path */}
-            <NavLink to='/лента-заказов' className={styles.link} activeClassName={styles.link_active}>
-              <ListIcon type={ location.pathname === '/лента-заказов' ? 'primary' : 'secondary' } />
+            <NavLink to='/feed' className={styles.link} activeClassName={styles.link_active}>
+              <ListIcon type={ location.pathname === '/feed' ? 'primary' : 'secondary' } />
               <p className="text text_type_main-default ml-2">
                 Лента заказов
               </p>

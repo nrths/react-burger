@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { baseUrl, checkResponse } from '../../utils/data';
+import { checkResponse } from '../../utils/check-funcs';
+import { baseUrl } from '../../utils/constants';
 import { getCookie } from '../../utils/cookies';
 
 export const registration = createAsyncThunk(
@@ -45,7 +46,6 @@ export const updateToken = createAsyncThunk(
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: getCookie('refreshToken') })
             })
-            console.log(response)
             if (response.status !== 200) {
                 updateToken()
             }
@@ -61,7 +61,7 @@ export const getUserInfo = createAsyncThunk(
     'auth/getUserInfo',
     async (token, { rejectWithValue }) => {
         try {
-            if (getCookie('accessToken')) {
+            // if (getCookie('accessToken')) {
                 const response = await fetch(`${baseUrl}/auth/user`, {
                     method: 'GET',
                     headers: {
@@ -76,10 +76,10 @@ export const getUserInfo = createAsyncThunk(
                 })
                 const data = await checkResponse(response)
                 return data
-            } else {
-                updateToken()
-                getUserInfo()
-            }
+            // } else {
+            //     updateToken()
+            //     getUserInfo()
+            // }
         } catch (err) {
             return rejectWithValue(err.message)
         }

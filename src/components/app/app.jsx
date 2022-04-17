@@ -12,7 +12,7 @@ import Modal from "../modal/modal";
 import {
   HomePage, LoginPage, RegistrationPage,
   ForgotPasswordPage, ResetPasswordPage, NotFoundPage,
-  ProfilePage, IngredientDetailsPage
+  ProfilePage, IngredientDetailsPage, FeedPage
 } from '../../pages';
 import { ProtectedRoute } from '../protected-route';
 
@@ -65,6 +65,9 @@ const App = () => {
         <Route path="/login" exact={true}>
           <LoginPage />
         </Route>
+        <Route path="/feed" exact={true}>
+          <FeedPage />
+        </Route>
 
         <Route path='/ingredients/:id' exact={true}>
           <IngredientDetailsPage />
@@ -75,7 +78,7 @@ const App = () => {
       </Switch>
 
       {background &&
-          <Route path='/ingredients/:id' >
+          <Route path='/ingredients/:id'>
             <Modal onClose={onCloseModal} title={'Детали ингредиента'}>
               <IngredientDetails/>
             </Modal>
