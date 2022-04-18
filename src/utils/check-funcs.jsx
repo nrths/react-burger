@@ -6,7 +6,14 @@ const checkResponse = (res) => {
     }
 };
 
-// кол-во ингредиентов?
+
+// const quantifyIngredients = (arr, id) => {
+//     let count = 0
+//     arr.forEach(element => {
+//         if (element._id === id) count++;
+//     })
+//     return count
+// }
 
 const formatDate = (date) => {
     const orderDate = new Date(date)
@@ -56,7 +63,5 @@ const checkStatus = (status) => {
         default: ''
     }
 }
-
-
 
 export { checkResponse, formatDate, checkStatus }

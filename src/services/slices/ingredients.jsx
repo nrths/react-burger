@@ -80,6 +80,7 @@ const ingredientsSlice = createSlice({
                 state.orderDetailsModal = true
             })
             .addCase(fetchOrderDetails.rejected, state => {
+                state.loading = false
                 state.orderNumber = 0
                 state.orderName = 'Ой, не начали :('
                 state.orderDetailsModal = true

@@ -8,6 +8,7 @@ import { getCookie } from '../../utils/cookies';
 
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderInfo from '../order-info/order-info';
 import Modal from "../modal/modal";
 import {
   HomePage, LoginPage, RegistrationPage,
@@ -72,18 +73,30 @@ const App = () => {
         <Route path='/ingredients/:id' exact={true}>
           <IngredientDetailsPage />
         </Route>
+        <Route path='/feed/:id' exact={true}>
+          <OrderInfo />
+        </Route>
+
         <Route>
           <NotFoundPage />
         </Route>
       </Switch>
 
       {background &&
-          <Route path='/ingredients/:id'>
-            <Modal onClose={onCloseModal} title={'Детали ингредиента'}>
-              <IngredientDetails/>
-            </Modal>
-          </Route>
-        }
+        <Route path='/ingredients/:id'>
+          <Modal onClose={onCloseModal} title={'Детали ингредиента'}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      }
+
+      {background &&
+        <Route path='/feed/:id'>
+          <Modal onClose={onCloseModal} title={''}>
+            <OrderInfo />
+          </Modal>
+        </Route>
+      }
 
     </>
   )

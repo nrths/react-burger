@@ -85,7 +85,7 @@ const userRightsSlice = createSlice({
                 state.isLoggedIn = true;
                 setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
                 setCookie('refreshToken', payload.refreshToken)
-                
+
             })
             .addCase(login.rejected, (state, { payload }) => { state.error = 'Ошибка!' })
             // update token

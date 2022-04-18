@@ -26,7 +26,7 @@ const OrderCard = ({ item }) => {
 
     return (
         <li className={styles.card}>
-            <Link className={`${styles.link}`} to={{ pathname: `/${item._id}`, state: { background: location } }}>
+            <Link className={`${styles.link}`} to={{ pathname: `/feed/${item._id}`, state: { background: location } }}>
                 <div className={styles.description}>
                     <span className={`${styles.number} text text_type_digits-default `}>{`#${item.number}`}</span>
                     <time className={`${styles.date} text_type_main-default text_color_inactive`}>{formatDate(item.createdAt)}</time>
