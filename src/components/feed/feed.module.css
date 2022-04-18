@@ -1,5 +1,5 @@
 .orders_list {
-    max-height: 620px;
+    max-height: 75vh;
     overflow-y: scroll;
     list-style-type: none;
     display: flex;

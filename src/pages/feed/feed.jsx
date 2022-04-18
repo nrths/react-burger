@@ -8,7 +8,7 @@ import { getAllOrders, closeWSConnection } from '../../services/thunks/ws-reques
 const FeedPage = () => {
 
     const dispatch = useDispatch();
-    const { orders, total, totalToday } = useSelector(state => state.feed);
+    const { orders } = useSelector(state => state.feed);
 
     useEffect(() => {
         dispatch(getAllOrders());
@@ -21,7 +21,7 @@ const FeedPage = () => {
     return (
         <div className={styles.container}>
             <Feed orders={orders}/>
-            <FeedBack />
+            <FeedBack orders={orders}/>
         </div>
     )
 }
