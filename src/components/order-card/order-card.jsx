@@ -6,7 +6,7 @@ import { ingredientsSelector } from '../../services/slices/ingredients';
 // import { PreviewListItem } from '../preview-list-item/preview-list-item';
 // сделать отдельный компонент для li с превью?
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { formatDate } from '../../utils/check-funcs';
+import { formatDate, checkStatus } from '../../utils/check-funcs';
 
 const OrderCard = ({ item }) => {
 
@@ -32,6 +32,8 @@ const OrderCard = ({ item }) => {
                     <time className={`${styles.date} text_type_main-default text_color_inactive`}>{formatDate(item.createdAt)}</time>
                 </div>
                 <h3 className={`${styles.title} text text_type_main-medium mt-6`}>{item.name}</h3>
+                {location.pathname === '/profile/orders' && 
+                <span className={`text_type_main-default pt-2 ${item.status === 'done' ? styles.status : 'text_color_primary'}`}>{checkStatus(item.status)}</span>}
                 <div className={`${styles.components} mt-7`}>
                     <ul className={styles.ingredients__list}>
                         {renderedOrderIngredients.slice(0, 6).map((ingredient, index) => (

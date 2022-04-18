@@ -12,8 +12,10 @@ export const socketMiddleware = () => {
       const { type, payload } = action
 
       if (type === wsInit.type) {
-        // console.log()
-        const wsUrl = payload.url ? `${payload.url}` : null 
+        const wsFeedUrl = payload.url ? `${payload.url}` : null
+        const wsUserOrdersUrl = payload.token ? `${payload.url}?token=${payload.token}` : null
+        console.log(wsUserOrdersUrl)
+        const wsUrl = payload.token ? wsUserOrdersUrl : wsFeedUrl
         socket = new WebSocket(wsUrl)
       }
 

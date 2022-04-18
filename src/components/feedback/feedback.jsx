@@ -33,11 +33,11 @@ const FeedBack = ({ orders }) => {
             </div>
             <div className={styles.totalToday}>
             <h3 className={`${styles.title} text text_type_main-medium`}>Выполнено за все время:</h3>
-            <span className={`${styles.digit} text text_type_digits-large`}>{totalToday}</span>
+            <span className={`${styles.digit} text text_type_digits-large`}>{total}</span>
             </div>
             <div className={styles.total}>
             <h3 className={`${styles.title} text text_type_main-medium`}>Выполнено за сегодня:</h3>
-            <span className={`${styles.digit} text text_type_digits-large`}>{total}</span>
+            <span className={`${styles.digit} text text_type_digits-large`}>{totalToday}</span>
             </div>
         </div>
     )

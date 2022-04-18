@@ -6,8 +6,6 @@ const checkResponse = (res) => {
     }
 };
 
-// checkStatus?
-
 // кол-во ингредиентов?
 
 const formatDate = (date) => {
@@ -20,7 +18,7 @@ const formatDate = (date) => {
         } else if ((orderDate.getDate() - today) === -1) {
             return 'Yesterday'
         } else {
-            return `${orderDate.getDate() - today} days ago`
+            return `${(orderDate.getDate() - today * -1)} days ago`
         }
     }
     const minutes = () => {
@@ -46,6 +44,19 @@ const formatDate = (date) => {
     return formatted
 }
 
+const checkStatus = (status) => {
+    switch (status) {
+        case 'done':
+            return 'Выполнен'
+        case 'pending':
+            return 'Готовится'
+        case 'created':
+            return 'Создан'
+        // eslint-disable-next-line no-unused-expressions
+        default: ''
+    }
+}
 
 
-export { checkResponse, formatDate }
+
+export { checkResponse, formatDate, checkStatus }
