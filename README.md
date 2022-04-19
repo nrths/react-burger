@@ -1,54 +1,51 @@
-# Getting Started with Create React App
+# Приложение Stellar Burger
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### sprint-1/step-1:
+* Создан новый проект на CRA
+* Верстка начального экрана
+
+### sprint-1/step-2:
+* Отрефакторены компоненты, добавлены новые
+* Подключен API (fetch)
+* Добавлен функционал
+
+### sprint-2/step-1:
+* Перенос состояния в Context
+* Добавлен функционал (просмотр деталей ингредиента, модальные окна, отправление заказа)
+
+### sprint-2/step-2:
+* Пренос состояния в `store`
+* Добавлен функционал (ограничение ингредиентов по типам, подсчет итоговой стоимости, DnD, вложенная сортировка ингредиентов в конструкторе)
+
+### sprint-3/step-1:
+* Базовая настройка роутинга (пакет  `react-router-dom`)
+* Верстка новых страниц, настройка функциональности
+* Добавлен функционал (регистрация, авторизация и обновление токена, выход из системы, сброс и восстановление пароля, обновление данных пользователя)
+
+### sprint-2/step-2:
+* Экраны "Лента заказов", "История заказов"
+* Настройка роутинга и сокет-соединения
+
+## Stack
+* [библиотека UI-компонентов](https://yandex-praktikum.github.io/react-developer-burger-ui-components/)
+* GIT
+
+* HTML5
+* CSS
+* ECMA6
+* React
+* API
+* Redux
+* Redux Toolkit 
+* PropTypes 
+* DnD 
+* WebSocket
+
+[GitHub Pages:](https://nrths.github.io/react-burger/) sprint-2/step-2
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm start`
-
-# Приложение Stellar Burger
-
-### sprint-1/step-1:
-* Создан новый проект на CRA - ✔
-* Установлена [библиотека UI-компонентов](https://yandex-praktikum.github.io/react-developer-burger-ui-components/) - ✔
-* Настроен GIT - ✔
-* Организована файловая структура - ✔
-* Верстка первого экрана  `HTML5, CSS, ECMA6` - ✔
-*  Созданы `React.Components`: `App` `AppHeader` `BurgerIngredients` `BurgerConstructor` `BurgerIngredient` `Total` - ✔
-
-### sprint-1/step-2:
-* React.Components функциональные - ✔
-* Подключен API (fetch) - ✔
-*  Добавлены  компоненты: `Modal` `ModalOverlay` `IngredientDetails` `Orderdetails` `Loader` `Error` - ✔
-* Типизация `PropTypes` - ✔
-
-### sprint-2/step-1:
-* Перенос состояния в Context - ✔
-* Ограничения ингредиентов по типам в `BurgerConstructor` - ✔
-* Подсчет итоговой стоимости с использованием хука `useReduser` - ✔
-* Добавлен API-запрос для создания заказа - ✔
-
-### sprint-2/step-2:
-* Обновлена инфраструктура приложения `Redux` `Redux Toolkit` `DnD` - ✔
-* Начальное состояние перенесено в `store` (список всех ингредиентов, список ингредиентов в конструкторе, объект текущего ингредиента, объект созданного заказа) - ✔
-* Созданы `actions` `reducers` (RTK) для: `BurgerIngredients`, `IngredientDetails`, `BurgerConstructor`, `OrderDetails` - ✔
-* Интерфейс навигации по ингредиентам - ✔
-* Реализовано перетаскивание ингредиентов - ✔
-* Вложенная сортировка ингредиентов в `BurgerConstructor` - ✔
-
-### sprint-3/step-1:
-* Установлен пакет для роутинга приложения `react-router-dom` - ✔
-* Базовая настройка `BrowserRouter`, `Router`, `Switch` - ✔
-* Создана директория `/pages` с маршрутами: `/login`, `/register`, `/forgot-password`, `reset-password`, `/profile`, `/ingredients/:id`, `404` - ✔
-* Сверстаны страницы авторизации и регистрации, настроены переходы - ✔
-* Сверстаны страницы восстановления и сброса пароля, настроена функциональность - ✔
-* Сверстана страница профиля пользователя, настроен роутинг (1.5/2)
-* Регистрация и авторизация (регистрация, авторизация и обновление токена, выход из системы, cookies) - ✔
-* Получение и обновление информации о пользователе - ✔
-* Защищённые маршруты в приложении - ✔
-* Доработка роутинга в приложении (детальная страница ингредиента) - ✔
-
-[GitHub Pages:](https://nrths.github.io/react-burger/) sprint-2/step-2
 
