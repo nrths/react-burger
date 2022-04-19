@@ -7,9 +7,10 @@ import NotFoundPage from './not-found/not-found';
 import ProfilePage from './profile/profile';
 import IngredientDetailsPage from './ingredient-details/ingredient-details';
 import FeedPage from './feed/feed';
+import OrderPage from './order/order';
 
 export {
     HomePage, LoginPage, RegistrationPage,
     ForgotPasswordPage, ResetPasswordPage, NotFoundPage,
-    ProfilePage, IngredientDetailsPage, FeedPage
+    ProfilePage, IngredientDetailsPage, FeedPage, OrderPage
 };

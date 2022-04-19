@@ -1,15 +1,16 @@
 import styles from './order-card.module.css';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { ingredientsSelector } from '../../services/slices/ingredients';
+import { feedSelector, getShowOrder } from '../../services/slices/feed'
 // import { PreviewListItem } from '../preview-list-item/preview-list-item';
 // сделать отдельный компонент для li с превью?
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { formatDate, checkStatus } from '../../utils/check-funcs';
 
 const OrderCard = ({ item }) => {
-
+    const dispatch = useDispatch();
     const location = useLocation();
     const { ingredients } = useSelector(ingredientsSelector)
     const orderIngredients = [];
@@ -25,8 +26,8 @@ const OrderCard = ({ item }) => {
     const totalPrice = orderIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0)
 
     return (
-        <li className={styles.card}>
-            <Link className={`${styles.link}`} to={{ pathname: `/feed/${item._id}`, state: { background: location } }}>
+        <li className={styles.card} onClick={() => dispatch(getShowOrder(item))}>
+            <Link className={`${styles.link}`} to={{ pathname: `${location.pathname}/${item._id}`, state: { background: location } }}>
                 <div className={styles.description}>
                     <span className={`${styles.number} text text_type_digits-default `}>{`#${item.number}`}</span>
                     <time className={`${styles.date} text_type_main-default text_color_inactive`}>{formatDate(item.createdAt)}</time>

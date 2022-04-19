@@ -1,6 +1,9 @@
 .container {
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 640px;
 }
 
 .status {
@@ -57,4 +60,12 @@
 .price {
     display: flex;
     align-items: center;
+}
+
+.title {
+    text-align: center;
+}
+
+.digits {
+    white-space: nowrap;
 }

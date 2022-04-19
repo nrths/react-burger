@@ -33,7 +33,11 @@ const ingredientsSlice = createSlice({
         },
         addIngredientInConstructorItem: {
             reducer: (state, { payload }) => {
-                state.constructor.burger = [...state.constructor.burger, payload]
+                if (payload.type === 'bun') {
+                    state.constructor.burger = [...state.constructor.burger, payload]
+                    state.constructor.burger = [...state.constructor.burger, payload]
+                }
+                else state.constructor.burger = [...state.constructor.burger, payload]
             },
             prepare: item => {
                 const uniqueID = nanoid()

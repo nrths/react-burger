@@ -31,8 +31,9 @@ export const webSocketSlice = createSlice({
 })
 
 export const {
-    wsInit, wsClose, wsError, wsSuccess, wsStop
+    wsInit, wsClose, wsError, wsSuccess
 } = webSocketSlice.actions
+export const wsActions = webSocketSlice.actions
 
 export const wsSelector = state => state.webSocket
 export default webSocketSlice.reducer

@@ -77,9 +77,6 @@ export const getUserInfo = createAsyncThunk(
                 })
                 const data = await checkResponse(response)
                 return data
-            } else {
-                updateToken()
-                getUserInfo()
             }
         } catch (err) {
             return rejectWithValue(err.message)

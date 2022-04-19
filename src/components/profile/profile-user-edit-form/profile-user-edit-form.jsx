@@ -3,7 +3,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../../services/slices/authorization';
-import { getUserInfo, updateUserInfo } from '../../../services/thunks/auth-thunks';
+import { updateUserInfo } from '../../../services/thunks/auth-thunks';
 import { resetUpdateMessage } from '../../../services/slices/authorization';
 
 export const ProfileEditForm = () => {
@@ -21,14 +21,13 @@ export const ProfileEditForm = () => {
     const [showButton, setShowButton] = useState(false)
     
     useEffect(() => {
-        dispatch(getUserInfo())
         setFormValue({
             email: user.email,
             password: '',
             name: user.name,
         })
         
-    }, [dispatch, user])
+    }, [user])
 
     const onReset = (e) => {
         e.preventDefault()

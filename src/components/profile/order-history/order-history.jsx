@@ -1,22 +1,16 @@
 import styles from './order-history.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { getUserOrders, closeWSConnection } from '../../../services/thunks/ws-requests';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { closeWSConnection } from '../../../services/thunks/ws-requests';
 import OrderCard from '../../order-card/order-card';
+import Loader from '../../loader/loader';
 
 
-export const ProfileOrders = () => {
+export const ProfileOrders = ({ orders }) => {
 
-    const { orders } = useSelector(state => state.feed)
-    const [ reversedOrderList, setOrderList ] = useState([])
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (orders.length > 0) setOrderList([...orders].reverse())
-    }, [orders])
-
-    useEffect(() => {
-        dispatch(getUserOrders())
         return () => {
             dispatch(closeWSConnection())
         }
@@ -24,12 +18,16 @@ export const ProfileOrders = () => {
     }, [])
 
     return (
-        <div className={`${styles.container} custom-scroll`}>
+        <>
+        {orders.length === 0 && <Loader />}
+        {orders.length > 0 && <div className={`${styles.container} custom-scroll`}>
             <ul className={styles.orders__list}>
-                {reversedOrderList.map(order => (
+                {orders && orders.map(order => (
                     <OrderCard item={order} key={order._id}/>
                 ))}
             </ul>
-        </div>
+        </div>}
+        </>
+        
     )
 }
