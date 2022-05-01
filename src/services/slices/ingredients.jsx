@@ -33,7 +33,11 @@ const ingredientsSlice = createSlice({
         },
         addIngredientInConstructorItem: {
             reducer: (state, { payload }) => {
-                state.constructor.burger = [...state.constructor.burger, payload]
+                if (payload.type === 'bun') {
+                    state.constructor.burger = [...state.constructor.burger, payload]
+                    state.constructor.burger = [...state.constructor.burger, payload]
+                }
+                else state.constructor.burger = [...state.constructor.burger, payload]
             },
             prepare: item => {
                 const uniqueID = nanoid()
@@ -65,9 +69,6 @@ const ingredientsSlice = createSlice({
             .addCase(fetchIngredients.pending, state => { state.loading = true })
             .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
                 state.ingredients = payload.data
-                // localStorage.setItem('storageIngredients', JSON.stringify(payload.data))
-                
-                //console.log(localStorage)
                 state.loading = false
                 state.hasError = false
             })
@@ -83,6 +84,7 @@ const ingredientsSlice = createSlice({
                 state.orderDetailsModal = true
             })
             .addCase(fetchOrderDetails.rejected, state => {
+                state.loading = false
                 state.orderNumber = 0
                 state.orderName = 'Ой, не начали :('
                 state.orderDetailsModal = true

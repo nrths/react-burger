@@ -10,8 +10,8 @@ import { useLocation, NavLink } from 'react-router-dom';
 const AppHeader = () => {
 
   const location = useLocation();
-  const changeProfileIcon = () => {
-    if (location.pathname !== '/profile' && location.pathname !== '/profile/orders') {
+  const changeIcon = (route, nestedRoute, dynamicRoute) => {
+    if (location.pathname !== route && location.pathname !== nestedRoute && location.pathname !== dynamicRoute) {
       return 'secondary'
     } else {
       return 'primary'
@@ -29,9 +29,8 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
-            {/* temporary path */}
-            <NavLink to='/лента-заказов' className={styles.link} activeClassName={styles.link_active}>
-              <ListIcon type={ location.pathname === '/лента-заказов' ? 'primary' : 'secondary' } />
+            <NavLink to='/feed' className={styles.link} activeClassName={styles.link_active}>
+              <ListIcon type={changeIcon('/feed', '/feed/:id')} />
               <p className="text text_type_main-default ml-2">
                 Лента заказов
               </p>
@@ -46,7 +45,7 @@ const AppHeader = () => {
           </li>
           <li className={`${styles.list__item} + pl-5 pr-5 pt-4 pb-4`}>
             <NavLink to='/profile' className={styles.link} activeClassName={styles.link_active}>
-              <ProfileIcon type={changeProfileIcon()} />
+              <ProfileIcon type={changeIcon('/profile', '/profile/orders', '/profile/orders/:id')} />
               <p className="text text_type_main-default ml-2">
                 Личный кабинет
               </p>

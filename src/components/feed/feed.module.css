@@ -1,0 +1,10 @@
+.orders_list {
+    max-height: 75vh;
+    overflow-y: scroll;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    margin: 0;
+    padding: 0;
+}

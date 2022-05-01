@@ -14,7 +14,7 @@ export const initialState = {
     },
     registerSuccess: false,
     forgotAndResetPass: false,
-    isLoggedIn: false,
+    isLoggedIn: !!getCookie('accessToken'),
     updated: false,
 
     loading: false,
@@ -25,9 +25,6 @@ const userRightsSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        checkPreLogin: state => {
-            getCookie('refreshToken') ? getUserInfo() : state.isLoggedIn = false;
-        },
         resetUpdateMessage: state => {
             state.updated = false
         },
@@ -78,16 +75,18 @@ const userRightsSlice = createSlice({
             })
             .addCase(login.fulfilled, (state, { payload }) => {
                 state.loading = false;
+                state.isLoggedIn = true;
                 state.user.name = payload.user.name;
                 state.user.email = payload.user.email;
-                state.user.password = payload.user.password;
-                console.log(payload)
-                state.isLoggedIn = true;
+                state.user.password = payload.user.password;                
                 setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
                 setCookie('refreshToken', payload.refreshToken)
-                
             })
-            .addCase(login.rejected, (state, { payload }) => { state.error = 'Ошибка!' })
+            .addCase(login.rejected, (state, { payload }) => {
+                state.isLoggedIn = false;
+                state.loading = false;
+                state.error = 'Ошибка!'
+            })
             // update token
             .addCase(updateToken.fulfilled, (state, { payload }) => {
                 deleteCookie('accessToken')
@@ -106,8 +105,7 @@ const userRightsSlice = createSlice({
                 state.loading = false;
                 state.user.name = payload.user.name;
                 state.user.email = payload.user.email;
-                state.user.password = payload.user.password;
-                state.isLoggedIn = true;
+                state.user.password = payload.user.password
             })
             .addCase(getUserInfo.rejected, (state, { payload }) => { state.error = 'Ошибка!' })
             // update user information
@@ -115,7 +113,6 @@ const userRightsSlice = createSlice({
             .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.user = payload
-                state.isLoggedIn = true
                 state.updated = true
             })
             .addCase(updateUserInfo.rejected, (state, { payload }) => { state.error = 'Ошибка!' })
@@ -123,7 +120,6 @@ const userRightsSlice = createSlice({
             .addCase(logout.fulfilled, (state, { payload }) => {
                 state.isLoggedIn = false
                 state.user = initialState.user
-                state.isLoggedIn = false
                 deleteCookie('accessToken')
                 deleteCookie('refreshToken')
             })
@@ -134,7 +130,6 @@ const userRightsSlice = createSlice({
 })
 
 export const {
-    checkPreLogin,
     resetUpdateMessage,
     resetErrors
 } = userRightsSlice.actions

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { baseUrl, checkResponse } from '../../utils/data';
+import { baseUrl } from '../../utils/constants';
+import { checkResponse } from '../../utils/check-funcs';
 import { getCookie } from '../../utils/cookies';
 
 export const registration = createAsyncThunk(
@@ -76,9 +77,6 @@ export const getUserInfo = createAsyncThunk(
                 })
                 const data = await checkResponse(response)
                 return data
-            } else {
-                updateToken()
-                getUserInfo()
             }
         } catch (err) {
             return rejectWithValue(err.message)

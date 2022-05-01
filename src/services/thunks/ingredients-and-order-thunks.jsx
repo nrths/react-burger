@@ -1,4 +1,5 @@
-import { baseUrl, checkResponse } from '../../utils/data';
+import { checkResponse } from '../../utils/check-funcs';
+import { baseUrl } from '../../utils/constants';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getCookie } from '../../utils/cookies';
 
