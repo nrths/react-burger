@@ -1,9 +1,10 @@
 import { getFeedData } from '../slices/feed';
-import { wsActions } from '../slices/web-socket';
-import { AnyAction } from 'redux';
+import { TWsActions } from '../slices/web-socket';
+import { AnyAction, Middleware, MiddlewareAPI } from 'redux';
+import { AppDispatch, TRootState } from '../index';
 
-export const socketMiddleware = (actions: typeof wsActions) => {
-  return (store: { dispatch: any}) => {
+export const socketMiddleware = (wsActions: TWsActions): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, TRootState>) => {
     let socket: WebSocket | null = null;
 
     return (next: (action: AnyAction) => void) => (action: AnyAction) => {

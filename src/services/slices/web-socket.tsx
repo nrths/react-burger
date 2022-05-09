@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { ActionCreatorWithoutPayload, ActionCreatorWithPayload, createSlice } from "@reduxjs/toolkit";
 
 type TWSState = {
   wsConnected: boolean;
@@ -33,5 +33,12 @@ export const webSocketSlice = createSlice({
 
 export const { wsInit, wsClose, wsError, wsSuccess } = webSocketSlice.actions;
 export const wsActions = webSocketSlice.actions;
+
+export type TWsActions = {
+  wsInit: ActionCreatorWithPayload<any, string>,
+  wsClose: ActionCreatorWithoutPayload<string>,
+  wsError: ActionCreatorWithoutPayload<string>,
+  wsSuccess: ActionCreatorWithoutPayload<string>
+}
 
 export default webSocketSlice.reducer;

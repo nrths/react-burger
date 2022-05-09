@@ -4,7 +4,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/types/hooks-types';
 import { deleteIngredientFromConstructorItem, dragItems } from '../../services/slices/ingredients';
 import { TConstructorMainItem, TIngredient } from '../../services/types/types';
 import styles from './constructor-main-item.module.css';
