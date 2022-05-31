@@ -22,9 +22,12 @@
 * Верстка новых страниц, настройка функциональности
 * Добавлен функционал (регистрация, авторизация и обновление токена, выход из системы, сброс и восстановление пароля, обновление данных пользователя)
 
-### sprint-2/step-2:
+### sprint-3/step-2:
 * Экраны "Лента заказов", "История заказов"
 * Настройка роутинга и сокет-соединения
+
+### sprint-4/step-1:
+* Добавлена типизация (переход с `.jsx/.js` на `.tsx/.ts`)
 
 ## Stack
 * [библиотека UI-компонентов](https://yandex-praktikum.github.io/react-developer-burger-ui-components/)
@@ -40,6 +43,7 @@
 * PropTypes 
 * DnD 
 * WebSocket
+* TypeScript
 
 [GitHub Pages:](https://nrths.github.io/react-burger/) sprint-2/step-2
 
